@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AteljeProjekat", "AteljeProjekat\AteljeProjekat.csproj", "{2EDC0D37-4E18-4FA6-A9D2-365CCB643D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AteljeProjekat", "AteljeProjekat\AteljeProjekat.csproj", "{2EDC0D37-4E18-4FA6-A9D2-365CCB643D00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBAccess", "DBAccess\DBAccess.csproj", "{DA007257-0C2E-4144-9F3B-003B0CAE2D46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2EDC0D37-4E18-4FA6-A9D2-365CCB643D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EDC0D37-4E18-4FA6-A9D2-365CCB643D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EDC0D37-4E18-4FA6-A9D2-365CCB643D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA007257-0C2E-4144-9F3B-003B0CAE2D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA007257-0C2E-4144-9F3B-003B0CAE2D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA007257-0C2E-4144-9F3B-003B0CAE2D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA007257-0C2E-4144-9F3B-003B0CAE2D46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
