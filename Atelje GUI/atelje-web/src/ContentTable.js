@@ -6,7 +6,17 @@ let dataHeader = [
 ];
 
 let dataHUmetnickaD = [
+    'Naziv:',
+    'Pravac:',
+    'Stil:',
+]
 
+let dataHAutor = [
+    'Godina Rodjenja:',
+    'Godina Smrti:',
+    'Ime:',
+    'Prezime:',
+    'Umetnicki Pravac:'
 ]
 
 let dataTable = [
@@ -22,6 +32,36 @@ let dataTable = [
     }
 ];
 
+let dataUD = [
+    {
+        Naziv: 'qweqweqwe',
+        Pravac: 'asdasdasdsad',
+        Stil: 'aqwewqegvcxv'
+    },
+    {
+        Naziv: 'qwe123123',
+        Pravac: 'as213123sdsad',
+        Stil: 'aqwe566xv'
+    }
+]
+
+let dataAutor = [
+    {
+        GodinaRodjenja: '1.1.1899.',
+        GodinaSmrti: '1.1.1989',
+        Ime: 'Aasasd',
+        Prezime: 'fdgdfhgrh',
+        UmetnickiPravac: 'hojekrwer'
+    },
+    {
+        GodinaRodjenja: '2.2.1899.',
+        GodinaSmrti: '2.2.1989',
+        Ime: 'Aasasd',
+        Prezime: 'fdgdfhgrh',
+        UmetnickiPravac: 'hojekrwer'
+    }
+]
+
 let btnsText = [
     'Ateljei', 'Umetnicka dela', 'Autori'
 ];
@@ -32,6 +72,31 @@ export class ContentTable extends React.Component{
         this.state = {
             headers : dataHeader,
             data : dataTable
+        }
+
+        this.btnOnClick = this.btnOnClick.bind(this);
+    }
+
+    btnOnClick(e){
+        let num = Number(e.target.id);
+
+        if(num === 0){
+            this.setState({
+                headers: dataHeader,
+                data: dataTable
+            });
+        }
+        else if (num === 1){
+            this.setState({
+                headers: dataHUmetnickaD,
+                data: dataUD
+            });
+        }
+        else {
+            this.setState({
+                headers: dataHAutor,
+                data: dataAutor
+            });
         }
     }
 
@@ -64,7 +129,7 @@ export class ContentTable extends React.Component{
         for (let i = 0; i < 3; i++) {
             btns.push(
                 <td>
-                    <button className="tableBtn">
+                    <button className="tableBtn" id={i} onClick={this.btnOnClick}>
                         {btnsText[i]}
                     </button>
                 </td>
