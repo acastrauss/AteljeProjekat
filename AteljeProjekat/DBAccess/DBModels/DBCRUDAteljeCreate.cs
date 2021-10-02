@@ -12,16 +12,23 @@ using System.Text;
 using System.IO;
 
 
-
+using DBAccess;
 using Atelje;
+using System.Linq;
+
 namespace Atelje {
 	public class DBCRUDAteljeCreate : DBCRUDAteljeCommand {
 
-		private EntitetSistema entiet;
+		public EntitetSistema entiet { get; set; }
 
 		public DBCRUDAteljeCreate(){
 
 		}
+
+		public DBCRUDAteljeCreate(EntitetSistema entitetSistema)
+        {
+			this.entiet = entitetSistema;
+        }
 
 		~DBCRUDAteljeCreate(){
 
@@ -29,31 +36,45 @@ namespace Atelje {
 
 		/// 
 		/// <param name="entitet"></param>
-		public void Create(EntitetSistema entitet){
-
+		public override void Create(EntitetSistema entitet){
+			using (var db = AteljeDB.Instance())
+            {
+				IDBConvert convert = new DBConvertAtelje();
+				db.Ateljes.Add((DBAccess.Atelje)convert.ConvertToDBModel(entitet));
+				db.SaveChanges();
+            }
 		}
 
 		/// 
 		/// <param name="id"></param>
-		public void Delete(int id){
+		public override void Delete(int id){
+            using (var db = AteljeDB.Instance())
+            {
+				var currAt = db.Ateljes.Where(x => x.Id == id);
 
+				if(currAt.Count() != 0)
+                {
+					db.Ateljes.Remove(currAt.First());
+					db.SaveChanges();
+                }
+            }
 		}
 
 		public EntitetSistema Entiet{
 			get{
-				return entieti;
+				return entiet;
 			}
 			set{
-				entieti = value;
+				entiet = value;
 			}
 		}
 
-		public void Execute(){
-
+		public override void Execute(){
+			this.Create(this.entiet);
 		}
 
-		public void Unexecute(){
-
+		public override void Unexecute(){
+			this.Delete(((Atelje)this.entiet).Id);
 		}
 
 	}//end DBCRUDAteljeCreate

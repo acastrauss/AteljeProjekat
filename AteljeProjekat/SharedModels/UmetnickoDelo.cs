@@ -21,7 +21,8 @@ namespace Atelje {
 		private string naziv;
 		private UmetnickiPravac pravac;
 		private Stil stil;
-
+		public int IdAtelje { get; set; }
+		public int IdUmetnik { get; set; }
 		public UmetnickoDelo(){
 
 		}

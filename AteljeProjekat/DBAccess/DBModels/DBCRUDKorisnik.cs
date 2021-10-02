@@ -12,8 +12,10 @@ using System.Text;
 using System.IO;
 
 
-
+using DBAccess;
 using Atelje;
+using System.Linq;
+
 namespace Atelje {
 	public class DBCRUDKorisnik : DBCRUD {
 
@@ -27,33 +29,87 @@ namespace Atelje {
 
 		/// 
 		/// <param name="entitet"></param>
-		public void Create(EntitetSistema entitet){
+		public override void Create(EntitetSistema entitet){
+            using (var db = AteljeDB.Instance())
+            {
+				IDBConvert convert = new DBConvertKorisnik();
 
+				db.KorisnikSistemas.Add((DBAccess.KorisnikSistema)convert.ConvertToDBModel(entitet));
+				db.SaveChanges();
+			}
 		}
 
 		/// 
 		/// <param name="id"></param>
-		public void Delete(int id){
-
+		public override void Delete(int id){
+            using (var db = AteljeDB.Instance())
+            {
+				if (db.KorisnikSistemas.Where(x => x.Id == id).Count() != 0)
+                {
+					db.KorisnikSistemas.Remove(db.KorisnikSistemas.Where(x => x.Id == id).FirstOrDefault());
+					db.SaveChanges();
+				}
+				else
+                {
+					throw new Exception("Korisnik ne postoji.");
+                }
+			}
 		}
 
 		/// 
 		/// <param name="korisnickoIme"></param>
 		/// <param name="lozinkaHash"></param>
-		public bool Exists(string korisnickoIme, string lozinkaHash){
+		public int KorisnikId(string korisnickoIme, string lozinkaHash){
+			int id = -1;
 
-			return false;
+			using (var db = AteljeDB.Instance())
+            {
+				if(db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).Count() != 0)
+                {
+					id = db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).First().Id;
+				}
+			}
+
+			return id;
 		}
 
-		public List<EntitetSistema> Read(){
+		public override List<EntitetSistema> Read(){
+			var retVal = new List<EntitetSistema>();
 
-			return null;
+            using (var db = AteljeDB.Instance())
+            {
+				IDBConvert convert = new DBConvertKorisnik();
+
+				retVal.AddRange(
+					db.KorisnikSistemas.Select(x => (KorisnikSistema)convert.ConvertToWebModel(x))
+					);
+            }
+
+			return retVal;
 		}
 
 		/// 
 		/// <param name="noviEntitet"></param>
-		public void Update(EntitetSistema noviEntitet){
+		public override void Update(EntitetSistema noviEntitet){
 
+			var k = (KorisnikSistema)noviEntitet;
+			var id = this.KorisnikId(k.KorisnickoIme, k.LozinkaHash);
+
+			if (id == -1)
+				throw new Exception("Korisnik ne postoji.");
+
+			k.Id = id;
+
+            using (var db = AteljeDB.Instance())
+            {
+				var current = db.KorisnikSistemas.Where(x => x.Id == k.Id).First();
+
+				IDBConvert convert = new DBConvertKorisnik();
+
+				db.KorisnikSistemas.Remove(current);
+				db.KorisnikSistemas.Add((DBAccess.KorisnikSistema)convert.ConvertToDBModel(k));
+				db.SaveChanges();
+            }
 		}
 
 	}//end DBCRUDKorisnik

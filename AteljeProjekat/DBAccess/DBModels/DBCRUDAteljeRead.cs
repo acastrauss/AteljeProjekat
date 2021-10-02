@@ -10,7 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using DBAccess;
+using System.Linq;
 
 
 using Atelje;
@@ -29,17 +30,25 @@ namespace Atelje {
 
 		public List<EntitetSistema> Entiteti{
 			get{
-				return entiteti;
+				return entitet;
 			}
 		}
 
-		public void Execute(){
-
+		public override void Execute(){
+			this.entitet = this.Read();
 		}
 
-		public List<EntitetSistema> Read(){
+		public override List<EntitetSistema> Read(){
+			var retVal = new List<EntitetSistema>();
+			
+			using (var db = AteljeDB.Instance())
+            {
+				IDBConvert convert = new DBConvertAtelje();
 
-			return null;
+				retVal.AddRange(db.Ateljes.Select(x => (Atelje)convert.ConvertToWebModel(x)));
+            }
+
+			return retVal;
 		}
 
 	}//end DBCRUDAteljeRead

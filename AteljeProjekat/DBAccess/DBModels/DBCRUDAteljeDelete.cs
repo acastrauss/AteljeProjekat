@@ -11,17 +11,24 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
+using DBAccess;
 
 using Atelje;
+using System.Linq;
+
 namespace Atelje {
 	public class DBCRUDAteljeDelete : DBCRUDAteljeCommand {
 
-		private EntitetSistema entitet;
+		public EntitetSistema entitet { get; set; }
 
 		public DBCRUDAteljeDelete(){
 
 		}
+
+		public DBCRUDAteljeDelete(EntitetSistema entitetSistema)
+        {
+			this.entitet = entitetSistema;
+        }
 
 		~DBCRUDAteljeDelete(){
 
@@ -29,14 +36,29 @@ namespace Atelje {
 
 		/// 
 		/// <param name="entitet"></param>
-		public void Create(EntitetSistema entitet){
+		public override void Create(EntitetSistema entitet){
+            using (var db = AteljeDB.Instance())
+            {
+				IDBConvert convert = new DBConvertAtelje();
 
+				db.Ateljes.Add((DBAccess.Atelje)convert.ConvertToDBModel(entitet));
+				db.SaveChanges();
+            }
 		}
 
 		/// 
 		/// <param name="id"></param>
 		public override void Delete(int id){
+            using (var db = AteljeDB.Instance())
+            {
+				var currAt = db.Ateljes.Where(x => x.Id == id);
 
+                if (currAt.Count() != 0)
+                {
+					db.Ateljes.Remove(currAt.First());
+					db.SaveChanges();
+                }
+            }
 		}
 
 		public EntitetSistema Entitet{
@@ -49,11 +71,11 @@ namespace Atelje {
 		}
 
 		public override void Execute(){
-
+			this.Delete(((Atelje)this.entitet).Id);
 		}
 
 		public override void Unexecute(){
-
+			this.Create(this.entitet);
 		}
 
 	}//end DBCRUDAteljeDelete

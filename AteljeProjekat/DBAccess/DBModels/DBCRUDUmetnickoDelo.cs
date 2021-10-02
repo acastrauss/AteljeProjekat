@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
+using DBAccess;
 
 using Atelje;
 namespace Atelje {
@@ -27,24 +27,23 @@ namespace Atelje {
 
 		/// 
 		/// <param name="entitet"></param>
-		public void Create(EntitetSistema entitet){
-
-		}
-
+		public override void Create(EntitetSistema entitet){
+        }
+		
 		/// 
 		/// <param name="id"></param>
-		public void Delete(int id){
+		public override void Delete(int id){
 
 		}
 
-		public List<EntitetSistema> Read(){
+		public override List<EntitetSistema> Read(){
 
 			return null;
 		}
 
 		/// 
 		/// <param name="noviEntitet"></param>
-		public void Update(EntitetSistema noviEntitet){
+		public override void Update(EntitetSistema noviEntitet){
 
 		}
 

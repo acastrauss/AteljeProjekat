@@ -17,10 +17,24 @@ using Atelje;
 namespace Atelje {
 	public class DBCRUDAteljeInvoker {
 
-		public List<DBCRUDAteljeCommand> komande;
+		private List<DBCRUDAteljeCommand> komande;
+		private int cntComm = 0;
+
+		public void AddComand(DBCRUDAteljeCommand command)
+        {
+            try
+            {
+				komande.RemoveRange(++cntComm, komande.Count - cntComm);
+				komande.Add(command);
+			}
+			catch (Exception)
+            {
+				return;
+            }
+		}
 
 		public DBCRUDAteljeInvoker(){
-
+			komande = new List<DBCRUDAteljeCommand>();
 		}
 
 		~DBCRUDAteljeInvoker(){
@@ -28,15 +42,17 @@ namespace Atelje {
 		}
 
 		public void ExecuteLast(){
-
+			komande[cntComm].Execute();
 		}
 
 		public void Redo(){
-
+			if(cntComm + 1 < komande.Count)
+				komande[cntComm++].Execute();
 		}
 
 		public void Undo(){
-
+			if(cntComm > 0)
+				komande[cntComm--].Unexecute();
 		}
 
 	}//end DBCRUDAteljeInvoker

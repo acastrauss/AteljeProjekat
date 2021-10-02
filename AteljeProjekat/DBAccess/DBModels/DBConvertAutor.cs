@@ -38,7 +38,6 @@ namespace Atelje {
                 foreach (var d in autor.m_UmetnickoDelo)
                 {
 					var delo = (DBAccess.UmetnickoDelo)convert.ConvertToDBModel(d);
-					delo.AutorId = autor.Id;
 
 					dela.Add(delo);
                 }

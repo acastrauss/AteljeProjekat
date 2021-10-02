@@ -12,6 +12,16 @@ namespace DBAccess
         {
         }
 
+        private static AteljeDB instance;
+
+        public static AteljeDB Instance()
+        {
+            if (instance == null)
+                instance = new AteljeDB();
+
+            return instance;
+        }
+
         public virtual DbSet<Atelje> Ateljes { get; set; }
         public virtual DbSet<Autor> Autors { get; set; }
         public virtual DbSet<KorisnikSistema> KorisnikSistemas { get; set; }

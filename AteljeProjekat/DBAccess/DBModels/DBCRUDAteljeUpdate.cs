@@ -11,7 +11,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
+using DBAccess;
+using System.Linq;
 
 using Atelje;
 namespace Atelje {
@@ -27,6 +28,12 @@ namespace Atelje {
 		~DBCRUDAteljeUpdate(){
 
 		}
+
+		public DBCRUDAteljeUpdate(EntitetSistema pre, EntitetSistema posle)
+        {
+			this.entitetPosle = posle;
+			this.entitetPre = pre;
+        }
 
 		public EntitetSistema EntitetPosle{
 			get{
@@ -46,18 +53,29 @@ namespace Atelje {
 			}
 		}
 
-		public void Execute(){
-
+		public override void Execute(){
+			this.Update(this.entitetPosle);
 		}
 
-		public void Unexecute(){
-
+		public override void Unexecute(){
+			this.Update(this.entitetPre);
 		}
 
 		/// 
 		/// <param name="noviEntiteti"></param>
-		public void Update(EntitetSistema noviEntiteti){
+		public override void Update(EntitetSistema noviEntiteti){
+            using (var db = AteljeDB.Instance())
+            {
+				var currAt = db.Ateljes.Where(x => x.Id == ((Atelje)noviEntiteti).Id);
 
+				if(currAt.Count() != 0)
+                {
+					IDBConvert convert = new DBConvertAtelje();
+
+					db.Ateljes.Remove(currAt.First());
+					db.Ateljes.Add((DBAccess.Atelje)convert.ConvertToDBModel(noviEntiteti));
+                }
+            }
 		}
 
 	}//end DBCRUDAteljeUpdate

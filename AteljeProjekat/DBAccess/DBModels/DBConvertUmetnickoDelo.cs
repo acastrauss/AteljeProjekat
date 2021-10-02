@@ -36,7 +36,9 @@ namespace Atelje {
 					Id = ud.Id,
 					Naziv = ud.Naziv,
 					Pravac = (int)ud.Pravac,
-					Stil = (int)ud.Stil
+					Stil = (int)ud.Stil,
+					AteljeId = ud.IdAtelje,
+					AutorId = ud.IdUmetnik
 				};
             }
             catch (Exception)
@@ -56,7 +58,9 @@ namespace Atelje {
 					Id = ud.Id,
 					Naziv = ud.Naziv,
 					Pravac = (UmetnickiPravac)ud.Pravac,
-					Stil = (Stil)ud.Stil
+					Stil = (Stil)ud.Stil,
+					IdAtelje = ud.AteljeId,
+					IdUmetnik = ud.AutorId
 				};
             }
             catch (Exception)

@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
+using DBAccess;
 
 using Atelje;
+using System.Linq;
+
 namespace Atelje {
 	public class DBCRUDUmetnik : DBCRUD {
 
@@ -27,25 +29,63 @@ namespace Atelje {
 
 		/// 
 		/// <param name="entitet"></param>
-		public void Create(EntitetSistema entitet){
+		public override void Create(EntitetSistema entitet){
+            using (var db = AteljeDB.Instance())
+            {
+				IDBConvert convert = new DBConvertAutor();
 
+				db.Autors.Add((DBAccess.Autor)convert.ConvertToDBModel(entitet));
+				db.SaveChanges();
+			}
 		}
 
 		/// 
 		/// <param name="id"></param>
-		public void Delete(int id){
-
+		public override void Delete(int id){
+            using (var db = AteljeDB.Instance())
+            {
+				if(db.Autors.Where(x => x.Id == id).Count() != 0)
+                {
+					db.Autors.Remove(db.Autors.Where(x => x.Id == id).First());
+					db.SaveChanges();
+                }
+				else
+                {
+					throw new Exception("Autor ne postoji.");
+                }
+            }
 		}
 
-		public List<EntitetSistema> Read(){
+		public override List<EntitetSistema> Read(){
+			var retVal = new List<EntitetSistema>();
 
-			return null;
+			using (var db = AteljeDB.Instance())
+            {
+				IDBConvert convert = new DBConvertAutor();
+
+				retVal.AddRange(db.Ateljes.Select(x => (Autor)convert.ConvertToWebModel(x)));
+            }
+
+			return retVal;
 		}
 
 		/// 
 		/// <param name="noviEntitet"></param>
-		public void Update(EntitetSistema noviEntitet){
+		public override void Update(EntitetSistema noviEntitet){
+			var a = (Autor)noviEntitet;
+			
+			using (var db = AteljeDB.Instance())
+            {
+				if(db.Autors.Where(x => x.Id == a.Id).Count() != 0)
+                {
+					IDBConvert convert = new DBConvertAutor();
 
+					var curr = db.Autors.Where(x => x.Id == a.Id).First();
+					db.Autors.Remove(curr);
+					db.Autors.Add((DBAccess.Autor)convert.ConvertToDBModel(a));
+					db.SaveChanges();
+                }
+            }
 		}
 
 	}//end DBCRUDUmetnik
