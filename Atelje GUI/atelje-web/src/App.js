@@ -1,4 +1,5 @@
 import './App.css';
+import { ContentTable } from './ContentTable';
 import { LogIn } from './LogIn';
 
 function App() {
@@ -6,8 +7,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <LogIn/>
+        <br/>
         <div className="tableDiv">
-          
+          <ContentTable></ContentTable>
         </div>
       </header>
     </div>

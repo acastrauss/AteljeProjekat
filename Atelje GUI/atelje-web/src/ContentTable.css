@@ -1,0 +1,29 @@
+.contentTable{
+    background-color: rgb(199, 219, 219);
+    border : 1px solid rgb(23, 27, 32);
+    border-radius: 10px;
+    justify-content: space-evenly;
+    width: 1000px;
+    align-items: center;
+    color: rgb(23, 27, 32);
+}
+
+.contentTable * {
+    border : 1px solid rgb(23, 27, 32);
+    padding: 10px;
+    font-size: large;
+}
+
+.tableBtn{
+    background-color: darkcyan;
+    border-radius: 10px;
+    height: 35px;
+    width: 150px;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.btnsHeader{
+    justify-content: space-evenly;
+    width: 1000px;
+}
