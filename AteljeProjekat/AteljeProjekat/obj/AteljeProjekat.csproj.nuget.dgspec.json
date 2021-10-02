@@ -36,7 +36,11 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\rva_projekat\\vs proj\\AteljeProjekat\\DBAccess\\DBAccess.csproj": {
+                "projectPath": "D:\\rva_projekat\\vs proj\\AteljeProjekat\\DBAccess\\DBAccess.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -78,6 +82,35 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.207\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "D:\\rva_projekat\\vs proj\\AteljeProjekat\\DBAccess\\DBAccess.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\rva_projekat\\vs proj\\AteljeProjekat\\DBAccess\\DBAccess.csproj",
+        "projectName": "DBAccess",
+        "projectPath": "D:\\rva_projekat\\vs proj\\AteljeProjekat\\DBAccess\\DBAccess.csproj",
+        "frameworks": {
+          "net47": {
+            "projectReferences": {
+              "D:\\rva_projekat\\vs proj\\AteljeProjekat\\SharedModels\\SharedModels.csproj": {
+                "projectPath": "D:\\rva_projekat\\vs proj\\AteljeProjekat\\SharedModels\\SharedModels.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net47": {}
+      }
+    },
+    "D:\\rva_projekat\\vs proj\\AteljeProjekat\\SharedModels\\SharedModels.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\rva_projekat\\vs proj\\AteljeProjekat\\SharedModels\\SharedModels.csproj",
+        "projectName": "SharedModels",
+        "projectPath": "D:\\rva_projekat\\vs proj\\AteljeProjekat\\SharedModels\\SharedModels.csproj"
+      },
+      "frameworks": {
+        "net47": {}
       }
     }
   }
