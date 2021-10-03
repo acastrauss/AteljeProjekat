@@ -12,3 +12,9 @@ D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\obj\Debug\DBAccess.csproj.CoreCo
 D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\obj\Debug\DBAccess.csproj.CopyComplete
 D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\obj\Debug\DBAccess.dll
 D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\obj\Debug\DBAccess.pdb
+D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\bin\Debug\EntityFrameworkExtensions.dll
+D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\bin\Debug\SharedModels.dll
+D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\bin\Debug\StructureMap.dll
+D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\bin\Debug\SharedModels.pdb
+D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\bin\Debug\EntityFrameworkExtensions.xml
+D:\rva_projekat\vs proj\AteljeProjekat\DBAccess\bin\Debug\StructureMap.xml

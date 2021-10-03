@@ -49,6 +49,7 @@
     <Compile Include="EntitetSistema.cs" />
     <Compile Include="IKorisnikLog.cs" />
     <Compile Include="ISistemLog.cs" />
+    <Compile Include="KorisnikFactory.cs" />
     <Compile Include="KorisnikLogCSV.cs" />
     <Compile Include="KorisnikSistema.cs" />
     <Compile Include="LogPodatak.cs" />
