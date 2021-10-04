@@ -30,6 +30,24 @@ namespace WebApp.Controllers
             return "value";
         }
 
+        [HttpPost]
+        public int UserId([FromBody]object value)
+        {
+            try
+            {
+                var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(value.ToString());
+                var userName = dict["username"];
+                var password = dict["password"];
+
+                DBCRUD db = new DBCRUDKorisnik();
+                return ((DBCRUDKorisnik)db).KorisnikId(userName, password);
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+        }
+
         // POST api/<KorisnikController>
         [HttpPost]
         public int Register([FromBody] object value)
@@ -38,7 +56,7 @@ namespace WebApp.Controllers
             {
                 var k = JsonConvert.DeserializeObject<Atelje.KorisnikSistema>(value.ToString());
                 DBCRUD db = new DBCRUDKorisnik();
-                db.Create(k);
+                //db.Create(k);
                 return 0;
             }
             catch (Exception e)

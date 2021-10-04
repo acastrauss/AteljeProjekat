@@ -62,14 +62,13 @@ namespace Atelje {
 		public int KorisnikId(string korisnickoIme, string lozinkaHash){
 			int id = -1;
 
-			using (var db = AteljeDB.Instance())
+			var db = AteljeDB.Instance();
+            
+			if(db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).Count() != 0)
             {
-				if(db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).Count() != 0)
-                {
-					id = db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).First().Id;
-				}
+				id = db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).First().Id;
 			}
-
+			
 			return id;
 		}
 
