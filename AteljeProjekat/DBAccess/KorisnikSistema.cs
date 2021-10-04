@@ -28,7 +28,7 @@ namespace DBAccess
         public string KorisnickoIme { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         public string LozinkaHash { get; set; }
 
         public int TipKorisnika { get; set; }

@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
-import './LogIn.css'
+import './LogIn.css';
+import { sha256 } from "js-sha256";
+
 
 export class LogIn extends React.Component{
     constructor(props){
@@ -17,8 +19,33 @@ export class LogIn extends React.Component{
         this.onChangePassword = this.onChangePassword.bind(this);
         this.validateForm = this.validateForm.bind(this);
         this.onClick = this.onClick.bind(this);
+
+        let hash = sha256('admin');
+
+        let admin = {
+            email: 'admin@admin.com',
+            ime: 'Admin',
+            korisnickoIme: 'admin',
+            lozinkaHash: hash,
+            prezime: 'Admin',
+            tipKorisnika: 0
+        };
+
+        let requestH = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(admin)
+        }
+
+        fetch('api/Korisnik/Register', requestH)
+            .then(response => response.json())
+            .then(data => {
+                console.log(JSON.stringify(data));
+            });
     }
-    
+
     onChangeUsername(e){
         let col = 'black';
 

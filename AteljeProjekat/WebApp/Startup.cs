@@ -27,6 +27,8 @@ namespace WebApp
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            var dbConn = this.Configuration.GetConnectionString("AteljeDB");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,9 +50,15 @@ namespace WebApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapControllers();
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "api/{controler}/{action}"
+                //    );
             });
 
             app.UseSpa(spa =>
@@ -62,6 +70,8 @@ namespace WebApp
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            
         }
     }
 }
