@@ -56,7 +56,7 @@ namespace WebApp.Controllers
             {
                 var k = JsonConvert.DeserializeObject<Atelje.KorisnikSistema>(value.ToString());
                 DBCRUD db = new DBCRUDKorisnik();
-                //db.Create(k);
+                db.Create(k);
                 return 0;
             }
             catch (Exception e)

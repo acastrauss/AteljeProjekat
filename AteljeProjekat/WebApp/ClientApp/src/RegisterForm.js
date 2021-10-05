@@ -15,12 +15,81 @@ export class RegisterForm extends React.Component{
                 'black', 'black', 'black', 'black', 'black'
             ],
             inputValues: [
-                '','','','',''
-            ]
-        }
+                '', '', '', '', ''
+            ],
+            btnOpacity: 0.5
+        };
+
+        this.onInputChange = this.onInputChange.bind(this);
+        this.registerClick = this.registerClick.bind(this);
+        this.validateInput = this.validateInput.bind(this);
     }
 
     onInputChange(e) {
+        
+        let indx = e.target.dataset.indx;
+
+        let values = this.state.inputValues;
+        values[indx] = e.target.value;
+
+        let colors = this.state.borderColors;
+
+        if (e.target.value) {
+            colors[indx] = 'black';
+        }
+        else {
+            colors[indx] = 'red';
+        }
+
+        this.setState({
+            borderColors: colors,
+            inputValues: values,
+            btnOpacity: this.state.btnOpacity
+        });
+    }
+
+    validateInput() {
+        let cond = true;
+
+        for (let i = 0; i < this.state.inputValues.length; i++) {
+            console.log(this.state.inputValues[i].length);
+            cond &= this.state.inputValues[i].length > 0;
+        }
+
+        let btnOpac = 0.5;
+
+        if (cond) {
+            btnOpac = 1;
+        }
+
+        this.state.btnOpacity = btnOpac;
+
+        return cond;
+    }
+
+    registerClick() {
+        let values = {
+            email: this.state.inputValues[0],
+            korisnickoIme: this.state.inputValues[1],
+            lozinkaHash: sha256(this.state.inputValues[2]),
+            ime: this.state.inputValues[3],
+            prezime: this.state.inputValues[4],
+            tipKorisnika: 1
+        };
+
+        let reqH = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        };
+
+        fetch('api/Korisnik/Register', reqH)
+            .then(response => response.json())
+            .then(data => {
+                alert('Registered');
+            });
 
     }
 
@@ -33,7 +102,7 @@ export class RegisterForm extends React.Component{
             let type = "text";
             if (i == 0)
                 type = "email";
-            else if (i == 1)
+            else if (i == 2)
                 type = "password";
 
             let ph = `${arrInput[i]} korisnika`
@@ -61,6 +130,19 @@ export class RegisterForm extends React.Component{
                 </div>
             )
         }
+
+        inputs.push(<div>
+            <button
+                className="loginbtn"
+                onClick={this.registerClick}
+                disabled={!this.validateInput()}
+                style={{
+                    opacity: this.state.btnOpacity
+                }}
+                >
+                Dodaj
+            </button>
+        </div>)
 
         return <div className="Login">
             {inputs}
