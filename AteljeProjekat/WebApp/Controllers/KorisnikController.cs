@@ -31,7 +31,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public int UserId([FromBody]object value)
+        public KorisnikSistema UserId([FromBody]object value)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace WebApp.Controllers
             }
             catch (Exception e)
             {
-                return -1;
+                return null;
             }
         }
 

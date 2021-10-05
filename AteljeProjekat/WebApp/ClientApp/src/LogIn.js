@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
 import './LogIn.css';
 import { sha256 } from "js-sha256";
 import { LoginCredentials } from "./LoginCredentials"
+import { RegisterForm } from "./RegisterForm";
 
 export class LogIn extends React.Component{
     constructor(props){
@@ -13,7 +13,8 @@ export class LogIn extends React.Component{
             usernameBorder : 'black',
             passwordBorder : 'black',
             btnOpacity: 1,
-            logged: false
+            logged: false,
+            showRegister: false
         };
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -21,31 +22,7 @@ export class LogIn extends React.Component{
         this.validateForm = this.validateForm.bind(this);
         this.onClick = this.onClick.bind(this);
         this.changeLoginShow = this.changeLoginShow.bind(this);
-
-        //let hash = sha256('admin');
-
-        //let admin = {
-        //    email: 'admin@admin.com',
-        //    ime: 'Admin',
-        //    korisnickoIme: 'admin',
-        //    lozinkaHash: hash,
-        //    prezime: 'Admin',
-        //    tipKorisnika: 0
-        //};
-
-        //let requestH = {
-        //    method: 'POST',
-        //    headers: {
-        //        'Content-Type': 'application/json'
-        //    },
-        //    body: JSON.stringify(admin)
-        //}
-
-        //fetch('api/Korisnik/Register', requestH)
-        //    .then(response => response.json())
-        //    .then(data => {
-        //        console.log(JSON.stringify(data));
-        //    });
+        this.showRegisterClick = this.showRegisterClick.bind(this);
     }
 
 
@@ -71,11 +48,19 @@ export class LogIn extends React.Component{
             fetch('api/Korisnik/UserId', requestHeader)
                 .then(response => response.json())
                 .then(data => {
-                    if (data != -1) {
-                        alert('You logged in. Your ID:' + data);
-                        LoginCredentials.username = this.state.username;
-                        LoginCredentials.passwordHash = this.state.password;
-                        LoginCredentials.userId = data;
+
+                    if (!data) {
+                        alert('Server error.');
+                        return;
+                    }
+
+                    if (data.id != -1) {
+                        
+                        alert('You logged in. Your ID:' + data.id);
+                        LoginCredentials.username = data.korisnickoIme;
+                        LoginCredentials.passwordHash = data.lozinkaHash;
+                        LoginCredentials.userId = data.id;
+                        LoginCredentials.userRole = data.tipKorisnika;
                         this.changeLoginShow();
                     }
                     else {
@@ -92,7 +77,20 @@ export class LogIn extends React.Component{
             usernameBorder: this.state.usernameBorder,
             passwordBorder: this.state.passwordBorder,
             btnOpacity: this.state.btnOpacity,
-            logged: !this.state.logged
+            logged: !this.state.logged,
+            showRegister: this.state.showRegister
+        });
+    }
+
+    showRegisterClick() {
+        this.setState({
+            password: this.state.password,
+            username: this.state.username,
+            usernameBorder: this.state.usernameBorder,
+            passwordBorder: this.state.passwordBorder,
+            btnOpacity: this.state.btnOpacity,
+            logged: this.state.logged,
+            showRegister: !this.state.showRegister
         });
     }
 
@@ -144,7 +142,7 @@ export class LogIn extends React.Component{
 
         let logBtn = [];
 
-        if (!this.state.logged) {
+        if (LoginCredentials.userId == -1) {
             logBtn.push(
                 <div className="Login" hidden={this.state.logged}>
                     <label className="labelLogin">Korisnicko ime</label>
@@ -207,6 +205,17 @@ export class LogIn extends React.Component{
 
         return <div>
             {logBtn}
+            <div hidden={!LoginCredentials.userRole == 0}>
+                <div>
+                    <button onClick={this.showRegisterClick} className="loginbtn">
+                        Registruj korisnika
+                    </button>
+                </div>
+                <div hidden={!this.state.showRegister}>
+                    <br/>
+                    <RegisterForm />
+                </div>
+            </div>
         </div>
     }
 }

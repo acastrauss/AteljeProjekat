@@ -59,17 +59,23 @@ namespace Atelje {
 		/// 
 		/// <param name="korisnickoIme"></param>
 		/// <param name="lozinkaHash"></param>
-		public int KorisnikId(string korisnickoIme, string lozinkaHash){
-			int id = -1;
+		/// Ukoliko korisnik postoji vrati njegovu intancu
+		public KorisnikSistema KorisnikId(string korisnickoIme, string lozinkaHash){
+			EntitetFactory factory = new KorisnikFactory();
+			KorisnikSistema korisnik = (KorisnikSistema)factory.MakeEntitet();
+			korisnik.Id = -1;
 
 			var db = AteljeDB.Instance();
             
 			if(db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).Count() != 0)
             {
-				id = db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).First().Id;
+				var dbK = db.KorisnikSistemas.Where(x => x.KorisnickoIme == korisnickoIme && x.LozinkaHash == lozinkaHash).First();
+
+				konverzija = new DBConvertKorisnik();
+				korisnik = (KorisnikSistema)konverzija.ConvertToWebModel(dbK);
 			}
 			
-			return id;
+			return korisnik;
 		}
 
 		public override List<EntitetSistema> Read(){
@@ -92,12 +98,10 @@ namespace Atelje {
 		public override void Update(EntitetSistema noviEntitet){
 
 			var k = (KorisnikSistema)noviEntitet;
-			var id = this.KorisnikId(k.KorisnickoIme, k.LozinkaHash);
+			var kor = this.KorisnikId(k.KorisnickoIme, k.LozinkaHash);
 
-			if (id == -1)
+			if (kor.Id == -1)
 				throw new Exception("Korisnik ne postoji.");
-
-			k.Id = id;
 
             using (var db = AteljeDB.Instance())
             {
