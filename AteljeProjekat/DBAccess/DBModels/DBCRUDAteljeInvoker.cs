@@ -24,8 +24,11 @@ namespace Atelje {
         {
             try
             {
-				komande.RemoveRange(++cntComm, komande.Count - cntComm);
+				if(komande.Count > 0)
+					komande.RemoveRange(++cntComm, komande.Count - cntComm);
+				
 				komande.Add(command);
+				cntComm = komande.Count - 1;
 			}
 			catch (Exception)
             {
