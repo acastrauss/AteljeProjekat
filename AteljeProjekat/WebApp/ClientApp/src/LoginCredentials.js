@@ -1,13 +1,34 @@
-﻿export class LoginCredentials {
-    static username = "";
-    static passwordHash = "";
-    static userId = -1;
-    static userRole = -1;
+﻿
+import { createStore } from 'redux';
 
-    static ResetCredentials() {
-        LoginCredentials.username = "";
-        LoginCredentials.passwordHash = "";
-        this.userId = -1;
-        this.userRole = -1;
+export const LOGIN_USER = 'LOGIN_USER';  
+export const LOGOUT_USER = 'LOGOUT_USER';
+
+export const initState = {
+    type: LOGOUT_USER,
+    username: '',
+    userId: -1,
+    userRole: -1
+};
+
+export function loginReducer(state = initState, action) {
+
+    
+    if (action.type == LOGIN_USER) {
+        return {
+            username: action.username,
+            userId: action.userId,
+            userRole: action.userRole
+        };
+    }
+
+    else if (action.type == LOGOUT_USER) {
+        return initState;
+    }
+    else {
+        return state;
     }
 }
+
+export const store = createStore(loginReducer);
+

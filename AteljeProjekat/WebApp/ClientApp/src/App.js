@@ -7,6 +7,7 @@ import { ContentTable } from './ContentTable';
 
 import './custom.css'
 
+
 export default class App extends Component {
   static displayName = App.name;
 

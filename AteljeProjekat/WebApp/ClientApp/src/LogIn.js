@@ -1,7 +1,8 @@
 import React from "react";
 import './LogIn.css';
 import { sha256 } from "js-sha256";
-import { LoginCredentials } from "./LoginCredentials"
+import { createStore } from 'redux';
+import { store, initState, loginReducer, LOGIN_USER } from "./LoginCredentials"
 import { RegisterForm } from "./RegisterForm";
 
 export class LogIn extends React.Component{
@@ -17,6 +18,15 @@ export class LogIn extends React.Component{
             showRegister: false
         };
 
+        var unsubscribe = store.subscribe(() => {
+            //console.log(store.getState());
+        })
+
+        // save user state
+        if (localStorage.getItem('user') != null) {
+            store.dispatch(JSON.parse(localStorage.getItem('user')));
+        }
+
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.validateForm = this.validateForm.bind(this);
@@ -25,10 +35,15 @@ export class LogIn extends React.Component{
         this.showRegisterClick = this.showRegisterClick.bind(this);
     }
 
+    componentDidMount() {
+
+    }
 
     onClick() {
-        if (this.state.logged) {
-            LoginCredentials.ResetCredentials();
+
+        if (store.getState().userId != -1) {
+            store.dispatch(initState);
+            localStorage.removeItem('user');
             this.changeLoginShow();
         }
         else {
@@ -57,10 +72,18 @@ export class LogIn extends React.Component{
                     if (data.id != -1) {
                         
                         alert('You logged in. Your ID:' + data.id);
-                        LoginCredentials.username = data.korisnickoIme;
-                        LoginCredentials.passwordHash = data.lozinkaHash;
-                        LoginCredentials.userId = data.id;
-                        LoginCredentials.userRole = data.tipKorisnika;
+                        store.dispatch({
+                            type: LOGIN_USER,
+                            username: data.korisnickoIme,
+                            userId: data.id,
+                            userRole: data.tipKorisnika
+                        });
+
+                        let storeState = store.getState();
+                        storeState.type = LOGIN_USER;
+
+                        localStorage.setItem('user', JSON.stringify(store.getState()));
+
                         this.changeLoginShow();
                     }
                     else {
@@ -142,9 +165,9 @@ export class LogIn extends React.Component{
 
         let logBtn = [];
 
-        if (LoginCredentials.userId == -1) {
+        if (store.getState().userId == -1) {
             logBtn.push(
-                <div className="Login" hidden={this.state.logged}>
+                <div className="Login" hidden={store.getState().userId != -1}>
                     <label className="labelLogin">Korisnicko ime</label>
                     <br />
                     <input
@@ -188,7 +211,7 @@ export class LogIn extends React.Component{
         }
         else {
             logBtn.push(
-                <div className="Login" hidden={!this.state.logged}>
+                <div className="Login" hidden={!store.getState().userId == -1}>
                     <button
                         block
                         className="loginbtn"
@@ -205,7 +228,7 @@ export class LogIn extends React.Component{
 
         return <div>
             {logBtn}
-            <div hidden={!LoginCredentials.userRole == 0}>
+            <div hidden={!store.getState().userRole == 0 || store.getState().userId == -1}>
                 <div>
                     <button onClick={this.showRegisterClick} className="loginbtn">
                         Registruj korisnika

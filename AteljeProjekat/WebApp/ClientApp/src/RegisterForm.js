@@ -52,7 +52,6 @@ export class RegisterForm extends React.Component{
         let cond = true;
 
         for (let i = 0; i < this.state.inputValues.length; i++) {
-            console.log(this.state.inputValues[i].length);
             cond &= this.state.inputValues[i].length > 0;
         }
 
