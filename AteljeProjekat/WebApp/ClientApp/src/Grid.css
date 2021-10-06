@@ -1,0 +1,21 @@
+﻿.grid-container {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.grid-login{
+    grid-column: 2/4;
+    grid-row: 1/2;
+}
+
+.grid-contentTable{
+    grid-column: 2/10;
+    grid-row: auto;
+}
+
+.grid-entityFormContainer{
+    grid-column: 18/20;
+    grid-row: 1/end;
+}

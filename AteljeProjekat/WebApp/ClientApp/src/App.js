@@ -5,7 +5,9 @@ import { Layout } from './components/Layout';
 import { LogIn } from './LogIn';
 import { ContentTable } from './ContentTable';
 
-import './custom.css'
+import './custom.css';
+import './Grid.css';
+import { EntityFormContainer } from './EntityFormContainer';
 
 
 export default class App extends Component {
@@ -15,10 +17,19 @@ export default class App extends Component {
     return (
         <div className="App">
             <header className="App-header">
-                <LogIn />
-                <br />
-                <div className="tableDiv">
-                    <ContentTable></ContentTable>
+                <div className='grid-container'>
+                    <div className='grid-login'>
+                        <LogIn />
+                    </div>
+                    <div className='grid-contentTable'>
+                        <div className="tableDiv">
+                            <ContentTable></ContentTable>
+                        </div>
+                    </div>
+                    <div className='grid-entityFormContainer'>
+                        <EntityFormContainer>
+                        </EntityFormContainer>
+                    </div>
                 </div>
             </header>
         </div>

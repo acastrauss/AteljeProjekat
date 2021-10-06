@@ -1,0 +1,77 @@
+﻿import React from 'react';
+import './LogIn.css';
+import { store } from "./LoginCredentials";
+import { entityStore, initStateEntity, SHOW_FORM, HIDE_FORM } from "./EntityFormState";
+import { AteljeForm } from "./EntityForms/AteljeForm";
+
+export class EntityFormContainer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showAtelje: false,
+            showUmetnickoDelo: false,
+            showAutor: false
+        };
+
+        this.onClickShow = this.onClickShow.bind(this);
+        this.onClickFormAtelje = this.onClickFormAtelje.bind(this);
+    }
+
+
+    onClickShow() {
+        console.log('clicked');
+
+        let shown = entityStore.getState().show;
+
+        let type = shown ? HIDE_FORM : SHOW_FORM;
+
+        entityStore.dispatch({
+            type: type,
+            show: !shown
+        })
+
+        this.forceUpdate();
+    }
+
+    onClickFormAtelje() {
+        this.setState({
+            showAtelje: !this.state.showAtelje,
+            showUmetnickoDelo: false,
+            showAutor: false
+        });
+    }
+
+    render() {
+        return <div>
+            <button
+                className='loginbtn'
+                onClick={this.onClickShow}
+            >
+                Dodaj entitete   
+            </button>
+            <br/>
+            <br />
+
+            <div hidden={!entityStore.getState().show}>
+                <button className='loginbtn' onClick={ this.onClickFormAtelje}>
+                    Dodaj atelje
+                </button>
+                <br />
+
+                <button className='loginbtn'>
+                    Dodaj umetnicko delo
+                </button>
+                <br />
+
+                <button className='loginbtn'>
+                    Dodaj autora
+                </button>
+                <br />
+                <div hidden={!this.state.showAtelje}>
+                    <AteljeForm />
+                </div>
+            </div>
+            
+        </div>
+    }
+}

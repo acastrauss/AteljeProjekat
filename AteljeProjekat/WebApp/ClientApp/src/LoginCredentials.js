@@ -12,8 +12,6 @@ export const initState = {
 };
 
 export function loginReducer(state = initState, action) {
-
-    
     if (action.type == LOGIN_USER) {
         return {
             username: action.username,

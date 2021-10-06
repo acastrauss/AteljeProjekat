@@ -1,8 +1,7 @@
 import React from "react";
 import './LogIn.css';
 import { sha256 } from "js-sha256";
-import { createStore } from 'redux';
-import { store, initState, loginReducer, LOGIN_USER } from "./LoginCredentials"
+import { store, initState, LOGIN_USER } from "./LoginCredentials"
 import { RegisterForm } from "./RegisterForm";
 
 export class LogIn extends React.Component{
