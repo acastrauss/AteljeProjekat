@@ -1,5 +1,6 @@
 import React from "react";
 import './ContentTable.css'
+import { umetnickiPravacEnum } from "./Enums";
 
 let dataHeader = [
     'Adresa:', 'PIB:', 'MBR:'
@@ -67,7 +68,28 @@ export class ContentTable extends React.Component{
                         });
                     }
 
+                    this.forceUpdate();
                 });
+
+            fetch('api/Autor/GetAll')
+                .then(response => response.json())
+                .then(data => {
+                    dataAutor = [];
+
+                    data.forEach(d => {
+                        dataAutor.push({
+                            GodinaRodjenja: d['godinaRodjenja'],
+                            GodinaSmrti: d['godinaSmrti'],
+                            Ime: d['ime'],
+                            Prezime: d['prezime'],
+                            UmetnickiPravac: umetnickiPravacEnum[d['umetnickiPravac']]
+                        });
+                    });
+
+                    this.forceUpdate();
+
+                });
+
         }, 2000);
     }
 

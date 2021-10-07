@@ -16,9 +16,11 @@ namespace WebApp.Controllers
     {
         // GET: api/<AutorController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Autor> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            DBCRUD db = new DBCRUDUmetnik();
+
+            return db.Read().Select(x => (Autor)x);
         }
 
         // GET api/<AutorController>/5

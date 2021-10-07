@@ -1,15 +1,5 @@
-﻿import React from 'react'
-
-
-let umetnickiPravacEnum = [
-	'Barok',
-	'Klasicizam',
-	'Kubizam',
-	'Renesansa',
-	'Romantizam',
-	'Impresionizam',
-	'Ekspresionizam'
-];
+﻿import React from 'react';
+import { umetnickiPravacEnum } from "./../Enums";
 
 let arrInput = [
     'godina rodjenja', 'godina smrti', 'ime', 'prezime', 'umetnicki pravac'

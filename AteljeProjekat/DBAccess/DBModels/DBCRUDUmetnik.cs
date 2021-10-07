@@ -56,12 +56,17 @@ namespace Atelje {
 
 		public override List<EntitetSistema> Read(){
 			var retVal = new List<EntitetSistema>();
+			AteljeDB db;
 
-			var db = AteljeDB.Instance();
-            
-			konverzija = new DBConvertAutor();
+            lock (db = AteljeDB.Instance())
+            {
+				konverzija = new DBConvertAutor();
 
-			retVal.AddRange(db.Ateljes.Select(x => (Autor)konverzija.ConvertToWebModel(x)));
+                foreach (var a in db.Autors)
+                {
+					retVal.Add((Autor)konverzija.ConvertToWebModel(a));
+                }
+			}
 
 			return retVal;
 		}
