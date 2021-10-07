@@ -92,8 +92,8 @@ export class ContentTable extends React.Component{
                         
                         dataTable.push({
                             Adresa: d['adresa'],
-                            MBR: d.['mmbr'],
-                            PIB: d.['pib']
+                            MBR: d['mmbr'],
+                            PIB: d['pib']
                         });
                     })
 
