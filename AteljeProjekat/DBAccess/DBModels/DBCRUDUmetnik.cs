@@ -30,41 +30,38 @@ namespace Atelje {
 		/// 
 		/// <param name="entitet"></param>
 		public override void Create(EntitetSistema entitet){
-            using (var db = AteljeDB.Instance())
-            {
-				IDBConvert convert = new DBConvertAutor();
+			var db = AteljeDB.Instance();
 
-				db.Autors.Add((DBAccess.Autor)convert.ConvertToDBModel(entitet));
-				db.SaveChanges();
-			}
+			konverzija = new DBConvertAutor();
+
+			db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(entitet));
+			db.SaveChanges();
 		}
 
 		/// 
 		/// <param name="id"></param>
 		public override void Delete(int id){
-            using (var db = AteljeDB.Instance())
+			var db = AteljeDB.Instance();
+            
+			if(db.Autors.Where(x => x.Id == id).Count() != 0)
             {
-				if(db.Autors.Where(x => x.Id == id).Count() != 0)
-                {
-					db.Autors.Remove(db.Autors.Where(x => x.Id == id).First());
-					db.SaveChanges();
-                }
-				else
-                {
-					throw new Exception("Autor ne postoji.");
-                }
+				db.Autors.Remove(db.Autors.Where(x => x.Id == id).First());
+				db.SaveChanges();
+            }
+			else
+            {
+				throw new Exception("Autor ne postoji.");
             }
 		}
 
 		public override List<EntitetSistema> Read(){
 			var retVal = new List<EntitetSistema>();
 
-			using (var db = AteljeDB.Instance())
-            {
-				IDBConvert convert = new DBConvertAutor();
+			var db = AteljeDB.Instance();
+            
+			konverzija = new DBConvertAutor();
 
-				retVal.AddRange(db.Ateljes.Select(x => (Autor)convert.ConvertToWebModel(x)));
-            }
+			retVal.AddRange(db.Ateljes.Select(x => (Autor)konverzija.ConvertToWebModel(x)));
 
 			return retVal;
 		}
@@ -73,19 +70,19 @@ namespace Atelje {
 		/// <param name="noviEntitet"></param>
 		public override void Update(EntitetSistema noviEntitet){
 			var a = (Autor)noviEntitet;
-			
-			using (var db = AteljeDB.Instance())
-            {
-				if(db.Autors.Where(x => x.Id == a.Id).Count() != 0)
-                {
-					IDBConvert convert = new DBConvertAutor();
 
-					var curr = db.Autors.Where(x => x.Id == a.Id).First();
-					db.Autors.Remove(curr);
-					db.Autors.Add((DBAccess.Autor)convert.ConvertToDBModel(a));
-					db.SaveChanges();
-                }
+			var db = AteljeDB.Instance();
+            
+			if(db.Autors.Where(x => x.Id == a.Id).Count() != 0)
+            {
+				konverzija = new DBConvertAutor();
+
+				var curr = db.Autors.Where(x => x.Id == a.Id).First();
+				db.Autors.Remove(curr);
+				db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(a));
+				db.SaveChanges();
             }
+            
 		}
 
 	}//end DBCRUDUmetnik

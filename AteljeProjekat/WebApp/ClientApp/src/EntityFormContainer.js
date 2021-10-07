@@ -3,6 +3,7 @@ import './LogIn.css';
 import { store } from "./LoginCredentials";
 import { entityStore, initStateEntity, SHOW_FORM, HIDE_FORM } from "./EntityFormState";
 import { AteljeForm } from "./EntityForms/AteljeForm";
+import { AutorForm } from './EntityForms/AutorForm';
 
 export class EntityFormContainer extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ export class EntityFormContainer extends React.Component {
 
         this.onClickShow = this.onClickShow.bind(this);
         this.onClickFormAtelje = this.onClickFormAtelje.bind(this);
+        this.onClickFormAutor = this.onClickFormAutor.bind(this);
     }
 
 
@@ -41,6 +43,14 @@ export class EntityFormContainer extends React.Component {
         });
     }
 
+    onClickFormAutor() {
+        this.setState({
+            showAtelje: false,
+            showUmetnickoDelo: false,
+            showAutor: !this.state.showAutor
+        });
+    }
+
     render() {
         return <div>
             <button
@@ -63,12 +73,15 @@ export class EntityFormContainer extends React.Component {
                 </button>
                 <br />
 
-                <button className='loginbtn'>
+                <button className='loginbtn' onClick={this.onClickFormAutor}>
                     Dodaj autora
                 </button>
                 <br />
                 <div hidden={!this.state.showAtelje}>
                     <AteljeForm />
+                </div>
+                <div hidden={!this.state.showAutor}>
+                    <AutorForm />
                 </div>
             </div>
             

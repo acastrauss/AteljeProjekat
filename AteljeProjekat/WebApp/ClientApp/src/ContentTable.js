@@ -19,48 +19,11 @@ let dataHAutor = [
     'Umetnicki Pravac:'
 ]
 
-let dataTable = [
-    {
-        Adresa: 'asdfgh',
-        PIB: '12345',
-        MBR: '12345678'
-    },
-    {
-        Adresa: 'qweqwrt',
-        PIB: '09876',
-        MBR: '98373842'
-    }
-];
+let dataTable = [];
 
-let dataUD = [
-    {
-        Naziv: 'qweqweqwe',
-        Pravac: 'asdasdasdsad',
-        Stil: 'aqwewqegvcxv'
-    },
-    {
-        Naziv: 'qwe123123',
-        Pravac: 'as213123sdsad',
-        Stil: 'aqwe566xv'
-    }
-]
+let dataUD = []
 
-let dataAutor = [
-    {
-        GodinaRodjenja: '1.1.1899.',
-        GodinaSmrti: '1.1.1989',
-        Ime: 'Aasasd',
-        Prezime: 'fdgdfhgrh',
-        UmetnickiPravac: 'hojekrwer'
-    },
-    {
-        GodinaRodjenja: '2.2.1899.',
-        GodinaSmrti: '2.2.1989',
-        Ime: 'Aasasd',
-        Prezime: 'fdgdfhgrh',
-        UmetnickiPravac: 'hojekrwer'
-    }
-]
+let dataAutor = []
 
 let btnsText = [
     'Ateljei', 'Umetnicka dela', 'Autori'
@@ -100,7 +63,7 @@ export class ContentTable extends React.Component{
                     if (this.state.data !== dataTable) {
                         this.setState({
                             headers: this.state.headers,
-                            data: dataTable
+                            data: this.state.data
                         });
                     }
 
