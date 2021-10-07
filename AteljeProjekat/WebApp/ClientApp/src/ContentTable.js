@@ -75,6 +75,41 @@ export class ContentTable extends React.Component{
         }
 
         this.btnOnClick = this.btnOnClick.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateR1esults = setInterval(() => {
+
+            fetch('api/Atelje/GetAll')
+                .then(response => response.json())
+                .then(data => {
+                    
+                    dataTable = [];
+
+                    data.forEach(d => {
+                        
+                        dataTable.push({
+                            Adresa: d['adresa'],
+                            MBR: d.['mmbr'],
+                            PIB: d.['pib']
+                        });
+                    })
+
+                    if (this.state.data !== dataTable) {
+                        this.setState({
+                            headers: this.state.headers,
+                            data: dataTable
+                        });
+                    }
+
+                });
+        }, 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.updateResults);
     }
 
     btnOnClick(e){

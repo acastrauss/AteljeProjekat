@@ -19,6 +19,7 @@ export class AteljeForm extends React.Component {
         super(props);
 
         this.onInputChange = this.onInputChange.bind(this);
+        this.createAtelje = this.createAtelje.bind(this);
     }
 
 

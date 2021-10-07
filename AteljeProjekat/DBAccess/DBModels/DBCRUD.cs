@@ -17,6 +17,7 @@ namespace Atelje {
 	public abstract class DBCRUD {
 
 		protected IDBConvert konverzija;
+		protected readonly object crudLock = new object();
 
 		public DBCRUD(){
 

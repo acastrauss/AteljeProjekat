@@ -14,11 +14,21 @@ namespace WebApp.Controllers
     [ApiController]
     public class AteljeController : ControllerBase
     {
+        private DBCRUDAteljeInvoker _invoker;
+
+        public AteljeController()
+        {
+            _invoker = new DBCRUDAteljeInvoker();
+        }
+
+
         // GET: api/<AteljeController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Atelje.Atelje> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            DBCRUDAteljeRead read = new DBCRUDAteljeRead();
+            read.Execute();
+            return read.Entiteti.Select(x => (Atelje.Atelje)x); 
         }
 
         // GET api/<AteljeController>/5
@@ -36,10 +46,9 @@ namespace WebApp.Controllers
             {
                 var atelje = JsonConvert.DeserializeObject<Atelje.Atelje>(value.ToString());
                 DBCRUDAteljeCreate db = new DBCRUDAteljeCreate();
-                DBCRUDAteljeInvoker invoker = new DBCRUDAteljeInvoker();
                 db.entiet = atelje;
-                invoker.AddComand(db);
-                invoker.ExecuteLast();
+                _invoker.AddComand(db);
+                _invoker.ExecuteLast();
                 return atelje;
             }
             catch (Exception e)

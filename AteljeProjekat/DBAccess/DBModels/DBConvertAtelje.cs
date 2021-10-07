@@ -40,10 +40,11 @@ namespace Atelje {
 
                 return new Atelje()
                 {
-                    Adresa = ateljeDB.Adresa,
-                    Mmbr = ateljeDB.MBR.ToCharArray(),
-                    Pib = ateljeDB.PIB.ToCharArray(),
-                    m_UmetnickoDelo = dela
+                    Adresa = ateljeDB.Adresa.Trim(),
+                    Mmbr = ateljeDB.MBR.Trim().ToCharArray(),
+                    Pib = ateljeDB.PIB.Trim().ToCharArray(),
+                    m_UmetnickoDelo = dela,
+                    Id = ateljeDB.Id
                 };
             }
             catch (Exception)
