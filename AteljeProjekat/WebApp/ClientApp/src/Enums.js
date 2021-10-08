@@ -15,3 +15,22 @@ export const umetnickiStilEnum = [
 	'FigurativnoSlikarstvo',
 	'Apstrakcija'
 ];
+
+export function GetIndxFromPravac(pravac) {
+    for (let i = 0; i < umetnickiPravacEnum.length; i++) {
+		if (pravac == umetnickiPravacEnum[i])
+			return i;
+	}
+
+	return -1;
+};
+
+export function GetIndxFromStil(stil) {
+	
+	for (let i = 0; i < umetnickiStilEnum.length; i++) {
+		if (stil == umetnickiStilEnum[i])
+			return i;
+	}
+
+	return -1;
+};

@@ -14,6 +14,8 @@ using System.IO;
 using DBAccess;
 
 using Atelje;
+using System.Linq;
+
 namespace Atelje {
 	public class DBCRUDUmetnickoDelo : DBCRUD {
 
@@ -28,23 +30,63 @@ namespace Atelje {
 		/// 
 		/// <param name="entitet"></param>
 		public override void Create(EntitetSistema entitet){
-        }
+			var db = AteljeDB.Instance();
+
+			konverzija = new DBConvertUmetnickoDelo();
+
+			db.UmetnickoDeloes.Add((DBAccess.UmetnickoDelo)konverzija.ConvertToDBModel(entitet));
+			db.SaveChanges();
+		}
 		
 		/// 
 		/// <param name="id"></param>
 		public override void Delete(int id){
+			var db = AteljeDB.Instance();
 
+			var delo = db.UmetnickoDeloes.Where(x => x.Id == id);
+
+			if (delo.Count() > 0)
+            {
+				db.UmetnickoDeloes.Remove(delo.First());
+				db.SaveChanges();
+            }
 		}
 
 		public override List<EntitetSistema> Read(){
+			var retVal = new List<EntitetSistema>();
 
-			return null;
+			AteljeDB db;
+
+            lock (db = AteljeDB.Instance())
+            {
+				konverzija = new DBConvertUmetnickoDelo();
+
+                foreach (var d in db.UmetnickoDeloes)
+                {
+					retVal.Add(konverzija.ConvertToWebModel(d));
+                }
+            }
+
+			return retVal;
 		}
 
 		/// 
 		/// <param name="noviEntitet"></param>
-		public override void Update(EntitetSistema noviEntitet){
+		public override void Update(EntitetSistema noviEntitet) {
+			var d = (UmetnickoDelo)noviEntitet;
+			var db = AteljeDB.Instance();
 
+			var deloQ = db.UmetnickoDeloes.Where(x => x.Id == d.Id);
+
+			if(deloQ.Count() > 0)
+            {
+				konverzija = new DBConvertUmetnickoDelo();
+
+				db.UmetnickoDeloes.Remove(deloQ.First());
+				var dbEnt = (DBAccess.UmetnickoDelo)konverzija.ConvertToDBModel(d);
+				db.UmetnickoDeloes.Add(dbEnt);
+				db.SaveChanges();
+			}
 		}
 
 	}//end DBCRUDUmetnickoDelo

@@ -1,6 +1,7 @@
 import React from "react";
 import './ContentTable.css'
 import { umetnickiPravacEnum, umetnickiStilEnum } from "./Enums";
+import * as EntitiesState from './EntitiesState';
 
 let dataHeader = [
     'Adresa:', 'PIB:', 'MBR:'
@@ -20,12 +21,6 @@ let dataHAutor = [
     'Umetnicki Pravac:'
 ]
 
-let dataTable = [];
-
-let dataUD = []
-
-let dataAutor = []
-
 let btnsText = [
     'Ateljei', 'Umetnicka dela', 'Autori'
 ];
@@ -35,7 +30,7 @@ export class ContentTable extends React.Component{
         super(props);
         this.state = {
             headers : dataHeader,
-            data : dataTable
+            data: EntitiesState.storeAtelje.getState().ateljes
         }
 
         this.btnOnClick = this.btnOnClick.bind(this);
@@ -50,31 +45,33 @@ export class ContentTable extends React.Component{
                 .then(response => response.json())
                 .then(data => {
                     
-                    dataTable = [];
+                    let ateljes = [];
 
                     data.forEach(d => {
-                        
-                        dataTable.push({
+
+                        let jsonD = {
                             Adresa: d['adresa'],
-                            MBR: d['mmbr'],
-                            PIB: d['pib']
-                        });
+                            MBR: d['mmbr'].join(''),
+                            PIB: d['pib'].join('')
+                        };
+
+                        ateljes.push(jsonD);
                     })
 
-                    if (this.state.data !== dataTable) {
-                        this.setState({
-                            headers: this.state.headers,
-                            data: this.state.data
-                        });
-                    }
+                    let newState = {
+                        type: EntitiesState.ADD_ATELJE,
+                        ateljes: [...data]
+                    };
 
+                    EntitiesState.storeAtelje.dispatch(newState);
+                    
                     this.forceUpdate();
                 });
 
             fetch('api/Autor/GetAll')
                 .then(response => response.json())
                 .then(data => {
-                    dataAutor = [];
+                    let dataAutor = [];
 
                     data.forEach(d => {
                         dataAutor.push({
@@ -82,15 +79,21 @@ export class ContentTable extends React.Component{
                             GodinaSmrti: d['godinaSmrti'],
                             Ime: d['ime'],
                             Prezime: d['prezime'],
-                            UmetnickiPravac: umetnickiPravacEnum[d['umetnickiPravac']]
+                            UmetnickiPravac: umetnickiPravacEnum[Number(d['umetnickiPravac'])]
                         });
                     });
 
-                    this.forceUpdate();
+                    let newState = {
+                        type: EntitiesState.ADD_AUTOR,
+                        autors: [...data]
+                    };
 
+                    EntitiesState.storeAutor.dispatch(newState);
+
+                    this.forceUpdate();
                 });
 
-        }, 2000);
+        }, 5000);
     }
 
     componentWillUnmount() {
@@ -103,19 +106,19 @@ export class ContentTable extends React.Component{
         if(num === 0){
             this.setState({
                 headers: dataHeader,
-                data: dataTable
+                data: EntitiesState.storeAtelje.getState().ateljes
             });
         }
         else if (num === 1){
             this.setState({
                 headers: dataHUmetnickaD,
-                data: dataUD
+                data: EntitiesState.storeUd.getState().uds
             });
         }
         else {
             this.setState({
                 headers: dataHAutor,
-                data: dataAutor
+                data: EntitiesState.storeAutor.getState().autors
             });
         }
     }
@@ -133,10 +136,17 @@ export class ContentTable extends React.Component{
             let d = this.state.data[i];
             let td = [];
             
-            Object.entries(d).map(([key, value]) => 
-                {
-                    return td.push(<td>{value}</td>);
-                })
+            Object.entries(d).map(([key, value]) => {
+                
+                if (key !== 'id') {
+                    if (key !== 'umetnickiPravac')
+                        return td.push(<td>{value}</td>);
+                    else
+                        return td.push(<td>{umetnickiPravacEnum[value]}</td>);
+                }
+                else
+                    return 0;
+            });
             
             td.push(<td>
                 <button className="tableBtn">Izmeni</button>
