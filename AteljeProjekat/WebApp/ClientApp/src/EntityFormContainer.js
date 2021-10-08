@@ -4,6 +4,7 @@ import { store } from "./LoginCredentials";
 import { entityStore, initStateEntity, SHOW_FORM, HIDE_FORM } from "./EntityFormState";
 import { AteljeForm } from "./EntityForms/AteljeForm";
 import { AutorForm } from './EntityForms/AutorForm';
+import { UmetnickoDeloForm } from './EntityForms/UmetnickoDelo';
 
 export class EntityFormContainer extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ export class EntityFormContainer extends React.Component {
         this.onClickShow = this.onClickShow.bind(this);
         this.onClickFormAtelje = this.onClickFormAtelje.bind(this);
         this.onClickFormAutor = this.onClickFormAutor.bind(this);
+        this.onClikFormUD = this.onClikFormUD.bind(this);
     }
 
 
@@ -51,6 +53,14 @@ export class EntityFormContainer extends React.Component {
         });
     }
 
+    onClikFormUD() {
+        this.setState({
+            showAtelje: false,
+            showUmetnickoDelo:!this.state.showUmetnickoDelo,
+            showAutor: false
+        });
+    }
+
     render() {
         return <div>
             <button
@@ -68,7 +78,7 @@ export class EntityFormContainer extends React.Component {
                 </button>
                 <br />
 
-                <button className='loginbtn'>
+                <button className='loginbtn' onClick={ this.onClikFormUD}>
                     Dodaj umetnicko delo
                 </button>
                 <br />
@@ -83,8 +93,10 @@ export class EntityFormContainer extends React.Component {
                 <div hidden={!this.state.showAutor}>
                     <AutorForm />
                 </div>
-            </div>
-            
+                <div hidden={!this.state.showUmetnickoDelo}>
+                    <UmetnickoDeloForm/>
+                </div>
+            </div>        
         </div>
     }
 }

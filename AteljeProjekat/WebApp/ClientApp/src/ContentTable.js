@@ -1,6 +1,6 @@
 import React from "react";
 import './ContentTable.css'
-import { umetnickiPravacEnum } from "./Enums";
+import { umetnickiPravacEnum, umetnickiStilEnum } from "./Enums";
 
 let dataHeader = [
     'Adresa:', 'PIB:', 'MBR:'

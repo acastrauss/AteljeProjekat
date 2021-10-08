@@ -7,3 +7,11 @@
 	'Impresionizam',
 	'Ekspresionizam'
 ];
+
+export const umetnickiStilEnum = [
+	'Pejzaz',
+	'MrtvaPriroda',
+	'Portret',
+	'FigurativnoSlikarstvo',
+	'Apstrakcija'
+];
