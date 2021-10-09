@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Atelje;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,12 @@ namespace WebApp.Controllers
             return db.Read().Select(x => (Atelje.UmetnickoDelo)x);
         }
 
-        // GET api/<UmetnickoDeloController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public Atelje.UmetnickoDelo GetOne([FromQuery] int id)
         {
-            return "value";
+            DBCRUD db = new DBCRUDUmetnickoDelo();
+
+            return (Atelje.UmetnickoDelo)db.Read().Where(x => ((Atelje.UmetnickoDelo)x).Id == id).First();
         }
 
         // POST api/<UmetnickoDeloController>
@@ -52,9 +54,19 @@ namespace WebApp.Controllers
         }
 
         // DELETE api/<UmetnickoDeloController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public int Delete([FromQuery]int id)
         {
+            try
+            {
+                DBCRUD db = new DBCRUDUmetnickoDelo();
+                db.Delete(id);
+                return id;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
     }
 }

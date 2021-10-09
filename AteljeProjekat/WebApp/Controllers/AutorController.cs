@@ -23,11 +23,12 @@ namespace WebApp.Controllers
             return db.Read().Select(x => (Autor)x);
         }
 
-        // GET api/<AutorController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public Atelje.Autor GetOne([FromQuery] int id)
         {
-            return "value";
+            DBCRUD db = new DBCRUDUmetnik();
+
+            return (Atelje.Autor)db.Read().Where(x => ((Atelje.Autor)x).Id == id).First();
         }
 
         // POST api/<AutorController>
@@ -37,7 +38,7 @@ namespace WebApp.Controllers
             try
             {
                 var a = JsonConvert.DeserializeObject<Atelje.Autor>(value.ToString());
-                a.m_UmetnickoDelo = new List<UmetnickoDelo>();
+                a.UmetnickaDela = new List<UmetnickoDelo>();
                 DBCRUD db = new DBCRUDUmetnik();
                 db.Create(a);
                 return a;
@@ -55,10 +56,19 @@ namespace WebApp.Controllers
         {
         }
 
-        // DELETE api/<AutorController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public int Delete([FromQuery] int id)
         {
+            try
+            {
+                DBCRUD db = new DBCRUDUmetnik();
+                db.Delete(id);
+                return id;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
     }
 }

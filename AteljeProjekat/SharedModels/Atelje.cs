@@ -20,10 +20,10 @@ namespace Atelje {
 		private string adresa;
 		private char[] mbr;
 		private char[] pib;
-		public List<UmetnickoDelo> m_UmetnickoDelo;
+		public List<UmetnickoDelo> UmetnickaDela { get; set; }
 		public int Id { get; set; }
 		public Atelje(){
-
+			UmetnickaDela = new List<UmetnickoDelo>();
 		}
 
 		~Atelje(){

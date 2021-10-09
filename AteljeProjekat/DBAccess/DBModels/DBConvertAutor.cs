@@ -35,7 +35,7 @@ namespace Atelje {
 				var dela = new List<DBAccess.UmetnickoDelo>();
 				IDBConvert convert = new DBConvertUmetnickoDelo();
 
-                foreach (var d in autor.m_UmetnickoDelo)
+                foreach (var d in autor.UmetnickaDela)
                 {
 					var delo = (DBAccess.UmetnickoDelo)convert.ConvertToDBModel(d);
 
@@ -80,7 +80,7 @@ namespace Atelje {
 					Id = autor.Id,
 					Ime = autor.Ime,
 					Prezime = autor.Prezime,
-					m_UmetnickoDelo = dela,
+					UmetnickaDela = dela,
 					UmetnickiPravac = (UmetnickiPravac)autor.UmetnickiPravac
 				};
             }

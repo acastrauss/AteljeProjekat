@@ -43,7 +43,7 @@ namespace Atelje {
                     Adresa = ateljeDB.Adresa.Trim(),
                     Mmbr = ateljeDB.MBR.Trim().ToCharArray(),
                     Pib = ateljeDB.PIB.Trim().ToCharArray(),
-                    m_UmetnickoDelo = dela,
+                    UmetnickaDela = dela,
                     Id = ateljeDB.Id
                 };
             }
@@ -63,7 +63,7 @@ namespace Atelje {
                 
                 IDBConvert conv = new DBConvertUmetnickoDelo();
 
-                foreach (var d in atelje.m_UmetnickoDelo)
+                foreach (var d in atelje.UmetnickaDela)
                 {
                     var delo = (DBAccess.UmetnickoDelo)conv.ConvertToDBModel(d);
                     dela.Add(delo);

@@ -23,10 +23,10 @@ namespace Atelje {
 		private string ime;
 		private string prezime;
 		private UmetnickiPravac umetnickiPravac;
-		public List<UmetnickoDelo> m_UmetnickoDelo;
+		public List<UmetnickoDelo> UmetnickaDela { get; set; }
 
 		public Autor(){
-
+			UmetnickaDela = new List<UmetnickoDelo>();
 		}
 
 		~Autor(){

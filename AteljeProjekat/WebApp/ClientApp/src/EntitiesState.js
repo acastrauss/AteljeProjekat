@@ -1,5 +1,6 @@
 ﻿import { createStore } from 'redux';
 
+// entities of app
 export const ADD_ATELJE = 'ADD_ATELJE';
 export const NO_ATELJE = 'NO_ATELJE';
 export const ADD_AUTOR = 'ADD_AUTOR';
@@ -64,3 +65,42 @@ export function udReducer(state = initUDState, action) {
 export const storeAtelje = createStore(ateljeReducer);
 export const storeAutor = createStore(autorReducer);
 export const storeUd = createStore(udReducer);
+
+// active entities
+export const ACTIVATE_ATELJE = 'ACTIVATE_ATELJE';
+export const ACTIVATE_AUTOR = 'ACTIVATE_AUTOR';
+export const ACTIVATE_UMETNICKO_DELO = 'ACTIVATE_UMETNICKO_DELO';
+
+export const initActive = {
+    activate: 'Atelje',
+    id: -1
+};
+
+export function activateReducer(state = initActive, action) {
+    switch (action.type) {
+        case 'Atelje':
+            return {
+                activate: 'Atelje',
+                id: action.id
+            };
+        case 'UmetnickoDelo':
+            return {
+                activate: 'UmetnickoDelo',
+                id: action.id
+            };
+        case 'Autor':
+            return {
+                activate: 'Autor',
+                id: action.id
+            };
+        case 'Id':
+            return {
+                activate: state.activate,
+                id: action.id
+            }
+        default:
+            return initActive;
+    };
+};
+
+export const storeActivate = createStore(activateReducer);

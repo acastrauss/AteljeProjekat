@@ -2,6 +2,7 @@ import React from "react";
 import './ContentTable.css'
 import { umetnickiPravacEnum, umetnickiStilEnum } from "./Enums";
 import * as EntitiesState from './EntitiesState';
+import { store } from "./LoginCredentials";
 
 let dataHeader = [
     'Adresa:', 'PIB:', 'MBR:'
@@ -36,6 +37,8 @@ export class ContentTable extends React.Component{
         this.btnOnClick = this.btnOnClick.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
+        this.detailsSet = this.detailsSet.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
 
     componentDidMount() {
@@ -45,22 +48,24 @@ export class ContentTable extends React.Component{
                 .then(response => response.json())
                 .then(data => {
                     
-                    let ateljes = [];
+                    let ateljesJson = [];
 
                     data.forEach(d => {
 
                         let jsonD = {
                             Adresa: d['adresa'],
                             MBR: d['mmbr'].join(''),
-                            PIB: d['pib'].join('')
+                            PIB: d['pib'].join(''),
+                            UmetnickaDela: d['umetnickaDela'],
+                            id: d['id']
                         };
 
-                        ateljes.push(jsonD);
+                        ateljesJson.push(jsonD);
                     })
 
-                    let newState = {
+                    let newState = {   
                         type: EntitiesState.ADD_ATELJE,
-                        ateljes: [...data]
+                        ateljes: [...ateljesJson]
                     };
 
                     EntitiesState.storeAtelje.dispatch(newState);
@@ -74,21 +79,51 @@ export class ContentTable extends React.Component{
                     let dataAutor = [];
 
                     data.forEach(d => {
+                        
                         dataAutor.push({
-                            GodinaRodjenja: d['godinaRodjenja'],
-                            GodinaSmrti: d['godinaSmrti'],
+                            GodinaRodjenja: d['godinaRodjenja'].split('T')[0],
+                            GodinaSmrti: d['godinaSmrti'].split('T')[0],
                             Ime: d['ime'],
                             Prezime: d['prezime'],
-                            UmetnickiPravac: umetnickiPravacEnum[Number(d['umetnickiPravac'])]
+                            UmetnickiPravac: umetnickiPravacEnum[Number(d['umetnickiPravac'])],
+                            UmetnickaDela: d['umetnickaDela'],
+                            id: d['id']
                         });
                     });
 
                     let newState = {
                         type: EntitiesState.ADD_AUTOR,
-                        autors: [...data]
+                        autors: [...dataAutor]
                     };
 
                     EntitiesState.storeAutor.dispatch(newState);
+
+                    this.forceUpdate();
+                });
+
+            fetch('api/UmetnickoDelo/GetAll')
+                .then(response => response.json())
+                .then(data => {
+
+                    let jsonUds = [];
+
+                    data.forEach(d => {
+                        jsonUds.push({
+                            naziv: d.naziv,
+                            pravac: umetnickiPravacEnum[d.pravac],
+                            stil: umetnickiStilEnum[d.stil],
+                            idAtelje: d.idAtelje,
+                            idUmetnik: d.idUmetnik,
+                            id: d.id
+                        });
+                    });
+
+                    let newState = {
+                        type: EntitiesState.ADD_UMETNICKO_DELO,
+                        uds: [...jsonUds]
+                    };
+
+                    EntitiesState.storeUd.dispatch(newState);
 
                     this.forceUpdate();
                 });
@@ -100,6 +135,32 @@ export class ContentTable extends React.Component{
         clearInterval(this.updateResults);
     }
 
+    detailsSet(e) {
+        let id = e.target.dataset.id;
+        
+        EntitiesState.storeActivate.dispatch({
+            type: 'Id',
+            id: id
+        });
+    }
+
+    onDelete(e) {
+        let id = e.target.dataset.id;
+
+        let active = EntitiesState.storeActivate.getState().activate;
+
+
+
+        fetch(`api/${active}/Delete?id=${id}`, {method:'DELETE'})
+            .then(response => response.json())
+            .then(data => {
+                if (data !== -1)
+                    alert('Deleted');
+                else
+                    alert('Error');
+            });
+    }
+
     btnOnClick(e){
         let num = Number(e.target.id);
 
@@ -108,11 +169,21 @@ export class ContentTable extends React.Component{
                 headers: dataHeader,
                 data: EntitiesState.storeAtelje.getState().ateljes
             });
+
+            EntitiesState.storeActivate.dispatch({
+                type: 'Atelje',
+                id: -1
+            });
         }
         else if (num === 1){
             this.setState({
                 headers: dataHUmetnickaD,
                 data: EntitiesState.storeUd.getState().uds
+            });
+
+            EntitiesState.storeActivate.dispatch({
+                type: 'UmetnickoDelo',
+                id: -1
             });
         }
         else {
@@ -120,8 +191,15 @@ export class ContentTable extends React.Component{
                 headers: dataHAutor,
                 data: EntitiesState.storeAutor.getState().autors
             });
+
+            EntitiesState.storeActivate.dispatch({
+                type: 'Autor',
+                id: -1
+            });
         }
     }
+
+
 
     render(){
         let hElems = [];
@@ -135,10 +213,12 @@ export class ContentTable extends React.Component{
         for (let i = 0; i < this.state.data.length; i++) {
             let d = this.state.data[i];
             let td = [];
-            
+
             Object.entries(d).map(([key, value]) => {
-                
-                if (key !== 'id') {
+                if (typeof value === 'object' || typeof value === 'array')
+                    return 0;
+
+                if (!key.toLowerCase().includes('id')) {
                     if (key !== 'umetnickiPravac')
                         return td.push(<td>{value}</td>);
                     else
@@ -149,10 +229,24 @@ export class ContentTable extends React.Component{
             });
             
             td.push(<td>
-                <button className="tableBtn">Izmeni</button>
+                <button
+                    className="tableBtn"
+                    data-id={d.id}
+                >Izmeni</button>
             </td>)
             td.push(<td>
-                <button className="tableBtn">Izbrisi</button>
+                <button
+                    className="tableBtn"
+                    data-id={d.id}
+                    onClick={this.onDelete}
+                >Izbrisi</button>
+            </td>)
+            td.push(<td>
+                <button
+                    className="tableBtn"
+                    data-id={d.id}
+                    onClick={this.detailsSet}
+                >Detalji</button>
             </td>)
 
             dataEl.push(

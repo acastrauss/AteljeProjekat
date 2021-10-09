@@ -8,6 +8,7 @@ import { ContentTable } from './ContentTable';
 import './custom.css';
 import './Grid.css';
 import { EntityFormContainer } from './EntityFormContainer';
+import { Details } from './Details';
 
 
 export default class App extends Component {
@@ -29,6 +30,9 @@ export default class App extends Component {
                     <div className='grid-entityFormContainer'>
                         <EntityFormContainer>
                         </EntityFormContainer>
+                    </div>
+                    <div className='grid-details'>
+                        <Details/>
                     </div>
                 </div>
             </header>

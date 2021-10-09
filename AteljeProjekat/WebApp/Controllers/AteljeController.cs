@@ -32,10 +32,12 @@ namespace WebApp.Controllers
         }
 
         // GET api/<AteljeController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public Atelje.Atelje GetOne([FromQuery] int id)
         {
-            return "value";
+            DBCRUD db = new DBCRUDAteljeRead();
+
+            return (Atelje.Atelje)db.Read().Where(x => ((Atelje.Atelje)x).Id == id).First();
         }
 
         // POST api/<AteljeController>
@@ -65,9 +67,27 @@ namespace WebApp.Controllers
         }
 
         // DELETE api/<AteljeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public int Delete([FromQuery] int id)
         {
+            try
+            {
+                DBCRUDAteljeDelete db = new DBCRUDAteljeDelete();
+                db.entitet = new Atelje.Atelje()
+                {
+                    Id = id
+                };
+
+                _invoker.AddComand(db);
+                _invoker.ExecuteLast();
+                return id;
+
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+
         }
     }
 }
