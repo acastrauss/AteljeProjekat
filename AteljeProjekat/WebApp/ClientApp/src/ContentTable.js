@@ -149,8 +149,6 @@ export class ContentTable extends React.Component{
 
         let active = EntitiesState.storeActivate.getState().activate;
 
-
-
         fetch(`api/${active}/Delete?id=${id}`, {method:'DELETE'})
             .then(response => response.json())
             .then(data => {

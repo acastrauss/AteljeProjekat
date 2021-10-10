@@ -42,6 +42,7 @@ export class UmetnickoDeloForm extends React.Component {
     componentDidMount() {
         unsubAutor = EntitiesState.storeAutor.subscribe(() => {
             autors = EntitiesState.storeAutor.getState().autors;
+
             this.forceUpdate();
 
             if (autorIndx === -1) {
@@ -217,10 +218,11 @@ export class UmetnickoDeloForm extends React.Component {
         let autorsOpt = [];
 
         for (let i = 0; i < autors.length; i++) {
-            let ime = `${autors[i].ime} ${autors[i].prezime}`;
+            
+            let ime = `${autors[i].Ime} ${autors[i].Prezime}`;
             
             autorsOpt.push(
-                <option value={ime} data-id={autors[i].Id} data-indx={i}            
+                <option value={ime} data-id={autors[i].id} data-indx={i}            
                 >
                     {ime}
                 </option>
@@ -248,12 +250,13 @@ export class UmetnickoDeloForm extends React.Component {
         let ateljesOpt = [];
 
         for (let i = 0; i < ateljes.length; i++) {
-            let adresa = ateljes[i].adresa;
+            
+            let adresa = ateljes[i].Adresa;
 
             ateljesOpt.push(
                 <option
                     val={adresa}
-                    data-id={ateljes[i].Id}>
+                    data-id={ateljes[i].id}>
                     {adresa}
                 </option>
             )

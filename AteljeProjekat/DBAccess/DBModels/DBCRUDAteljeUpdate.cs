@@ -64,18 +64,20 @@ namespace Atelje {
 		/// 
 		/// <param name="noviEntiteti"></param>
 		public override void Update(EntitetSistema noviEntiteti){
-            using (var db = AteljeDB.Instance())
+			AteljeDB db;
+
+            lock (db = AteljeDB.Instance())
             {
 				var currAt = db.Ateljes.Where(x => x.Id == ((Atelje)noviEntiteti).Id);
 
-				if(currAt.Count() != 0)
-                {
-					IDBConvert convert = new DBConvertAtelje();
+				if (currAt.Count() != 0)
+				{
+					konverzija = new DBConvertAtelje();
 
 					db.Ateljes.Remove(currAt.First());
-					db.Ateljes.Add((DBAccess.Atelje)convert.ConvertToDBModel(noviEntiteti));
-                }
-            }
+					db.Ateljes.Add((DBAccess.Atelje)konverzija.ConvertToDBModel(noviEntiteti));
+				}
+			}
 		}
 
 	}//end DBCRUDAteljeUpdate

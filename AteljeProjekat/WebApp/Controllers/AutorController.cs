@@ -62,6 +62,15 @@ namespace WebApp.Controllers
             try
             {
                 DBCRUD db = new DBCRUDUmetnik();
+                DBCRUD dbUd = new DBCRUDUmetnickoDelo();
+
+                var u = (Atelje.Autor)db.Read().Where(x => ((Atelje.Autor)x).Id == id).FirstOrDefault();
+
+                foreach (var d in u.UmetnickaDela)
+                {
+                    dbUd.Delete(d.Id);
+                }
+
                 db.Delete(id);
                 return id;
             }

@@ -37,28 +37,30 @@ namespace Atelje {
 		/// 
 		/// <param name="entitet"></param>
 		public override void Create(EntitetSistema entitet){
-            using (var db = AteljeDB.Instance())
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
             {
-				IDBConvert convert = new DBConvertAtelje();
+				konverzija = new DBConvertAtelje();
 
-				db.Ateljes.Add((DBAccess.Atelje)convert.ConvertToDBModel(entitet));
+				db.Ateljes.Add((DBAccess.Atelje)konverzija.ConvertToDBModel(entitet));
 				db.SaveChanges();
-            }
+			}
 		}
 
 		/// 
 		/// <param name="id"></param>
 		public override void Delete(int id){
-            using (var db = AteljeDB.Instance())
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
             {
 				var currAt = db.Ateljes.Where(x => x.Id == id);
 
-                if (currAt.Count() != 0)
-                {
+				if (currAt.Count() != 0)
+				{
 					db.Ateljes.Remove(currAt.First());
 					db.SaveChanges();
-                }
-            }
+				}
+			}
 		}
 
 		public EntitetSistema Entitet{

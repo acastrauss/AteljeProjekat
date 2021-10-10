@@ -41,8 +41,12 @@ export class Details extends React.Component {
                     }
                     else {
 
+
+
                         let str = '';
-                        if (typeof value !== Object) {
+                        let dela = [];
+
+                        if (typeof value !== 'object') {
                             if (key.toLowerCase().includes('pravac')) {
                                 str = `${key}:${Enums.umetnickiPravacEnum[value]}`;
                             }
@@ -56,12 +60,32 @@ export class Details extends React.Component {
                                 str = `${key}:${value}`;
                             }
                         }
+                        else if (Array.isArray(value)) {
+                            if (value.length > 0) {
+                                // pib or mbr
+                                if (typeof value[0] === 'string') {
+                                    str = `${key}:${value.join('')}`;
+                                }
+                                else {
+
+                                    str += 'Umetnicka dela:\n';
+                                    value.forEach(v => {
+                                        str += `Naziv dela:${v.naziv}\n`;
+                                    });
+                                }
+                            }
+                        }
+
+                        if (str.length > 0) {
+                            dataArr.push(<tr>
+                                <td style={{
+                                    whiteSpace:'pre-wrap'
+                                }}>
+                                    {str}
+                                </td>
+                            </tr>);
+                        }
                         
-                        dataArr.push(<tr>
-                            <td>
-                                {str}
-                            </td>
-                        </tr>)
                     }
                 });
 

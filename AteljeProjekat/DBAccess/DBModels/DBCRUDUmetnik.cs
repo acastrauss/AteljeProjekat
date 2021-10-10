@@ -30,28 +30,32 @@ namespace Atelje {
 		/// 
 		/// <param name="entitet"></param>
 		public override void Create(EntitetSistema entitet){
-			var db = AteljeDB.Instance();
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
+            {
+				konverzija = new DBConvertAutor();
 
-			konverzija = new DBConvertAutor();
-
-			db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(entitet));
-			db.SaveChanges();
+				db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(entitet));
+				db.SaveChanges();
+			}
 		}
 
 		/// 
 		/// <param name="id"></param>
 		public override void Delete(int id){
-			var db = AteljeDB.Instance();
-            
-			if(db.Autors.Where(x => x.Id == id).Count() != 0)
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
             {
-				db.Autors.Remove(db.Autors.Where(x => x.Id == id).First());
-				db.SaveChanges();
-            }
-			else
-            {
-				throw new Exception("Autor ne postoji.");
-            }
+				if (db.Autors.Where(x => x.Id == id).Count() != 0)
+				{
+					db.Autors.Remove(db.Autors.Where(x => x.Id == id).First());
+					db.SaveChanges();
+				}
+				else
+				{
+					throw new Exception("Autor ne postoji.");
+				}
+			}
 		}
 
 		public override List<EntitetSistema> Read(){
@@ -75,19 +79,19 @@ namespace Atelje {
 		/// <param name="noviEntitet"></param>
 		public override void Update(EntitetSistema noviEntitet){
 			var a = (Autor)noviEntitet;
-
-			var db = AteljeDB.Instance();
-            
-			if(db.Autors.Where(x => x.Id == a.Id).Count() != 0)
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
             {
-				konverzija = new DBConvertAutor();
+				if (db.Autors.Where(x => x.Id == a.Id).Count() != 0)
+				{
+					konverzija = new DBConvertAutor();
 
-				var curr = db.Autors.Where(x => x.Id == a.Id).First();
-				db.Autors.Remove(curr);
-				db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(a));
-				db.SaveChanges();
-            }
-            
+					var curr = db.Autors.Where(x => x.Id == a.Id).First();
+					db.Autors.Remove(curr);
+					db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(a));
+					db.SaveChanges();
+				}
+			}
 		}
 
 	}//end DBCRUDUmetnik

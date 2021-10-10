@@ -30,26 +30,31 @@ namespace Atelje {
 		/// 
 		/// <param name="entitet"></param>
 		public override void Create(EntitetSistema entitet){
-			var db = AteljeDB.Instance();
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
+            {
+				konverzija = new DBConvertUmetnickoDelo();
 
-			konverzija = new DBConvertUmetnickoDelo();
-
-			db.UmetnickoDeloes.Add((DBAccess.UmetnickoDelo)konverzija.ConvertToDBModel(entitet));
-			db.SaveChanges();
+				db.UmetnickoDeloes.Add((DBAccess.UmetnickoDelo)konverzija.ConvertToDBModel(entitet));
+				db.SaveChanges();
+			}
 		}
 		
 		/// 
 		/// <param name="id"></param>
 		public override void Delete(int id){
-			var db = AteljeDB.Instance();
+			AteljeDB db;
 
-			var delo = db.UmetnickoDeloes.Where(x => x.Id == id);
-
-			if (delo.Count() > 0)
+            lock (db = AteljeDB.Instance())
             {
-				db.UmetnickoDeloes.Remove(delo.First());
-				db.SaveChanges();
-            }
+				var delo = db.UmetnickoDeloes.Where(x => x.Id == id);
+
+				if (delo.Count() > 0)
+				{
+					db.UmetnickoDeloes.Remove(delo.First());
+					db.SaveChanges();
+				}
+			}
 		}
 
 		public override List<EntitetSistema> Read(){
@@ -74,18 +79,20 @@ namespace Atelje {
 		/// <param name="noviEntitet"></param>
 		public override void Update(EntitetSistema noviEntitet) {
 			var d = (UmetnickoDelo)noviEntitet;
-			var db = AteljeDB.Instance();
-
-			var deloQ = db.UmetnickoDeloes.Where(x => x.Id == d.Id);
-
-			if(deloQ.Count() > 0)
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
             {
-				konverzija = new DBConvertUmetnickoDelo();
+				var deloQ = db.UmetnickoDeloes.Where(x => x.Id == d.Id);
 
-				db.UmetnickoDeloes.Remove(deloQ.First());
-				var dbEnt = (DBAccess.UmetnickoDelo)konverzija.ConvertToDBModel(d);
-				db.UmetnickoDeloes.Add(dbEnt);
-				db.SaveChanges();
+				if (deloQ.Count() > 0)
+				{
+					konverzija = new DBConvertUmetnickoDelo();
+
+					db.UmetnickoDeloes.Remove(deloQ.First());
+					var dbEnt = (DBAccess.UmetnickoDelo)konverzija.ConvertToDBModel(d);
+					db.UmetnickoDeloes.Add(dbEnt);
+					db.SaveChanges();
+				}
 			}
 		}
 
