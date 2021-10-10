@@ -1,8 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import './ContentTable.css'
 import { umetnickiPravacEnum, umetnickiStilEnum } from "./Enums";
 import * as EntitiesState from './EntitiesState';
 import { store } from "./LoginCredentials";
+import { get } from "jquery";
 
 let dataHeader = [
     'Adresa:', 'PIB:', 'MBR:'
@@ -39,6 +40,33 @@ export class ContentTable extends React.Component{
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.detailsSet = this.detailsSet.bind(this);
         this.onDelete = this.onDelete.bind(this);
+        this.umetnickaDelaGet = this.umetnickaDelaGet.bind(this);
+    }
+
+    umetnickaDelaGet(data) {
+        let jsonUds = [];
+
+        for (let i = 0; i < data.length; i++) {
+            let d = data[i];
+            
+            jsonUds.push({
+                naziv: d.naziv,
+                pravac: umetnickiPravacEnum[d.pravac],
+                stil: umetnickiStilEnum[d.stil],
+                idAtelje: d.idAtelje,
+                idUmetnik: d.idUmetnik,
+                id: d.id
+            });
+        }
+
+        let newState = {
+            type: EntitiesState.ADD_UMETNICKO_DELO,
+            uds: [...jsonUds]
+        };
+
+        EntitiesState.storeUd.dispatch(newState);
+
+        this.forceUpdate();
     }
 
     componentDidMount() {
@@ -104,28 +132,7 @@ export class ContentTable extends React.Component{
             fetch('api/UmetnickoDelo/GetAll')
                 .then(response => response.json())
                 .then(data => {
-
-                    let jsonUds = [];
-
-                    data.forEach(d => {
-                        jsonUds.push({
-                            naziv: d.naziv,
-                            pravac: umetnickiPravacEnum[d.pravac],
-                            stil: umetnickiStilEnum[d.stil],
-                            idAtelje: d.idAtelje,
-                            idUmetnik: d.idUmetnik,
-                            id: d.id
-                        });
-                    });
-
-                    let newState = {
-                        type: EntitiesState.ADD_UMETNICKO_DELO,
-                        uds: [...jsonUds]
-                    };
-
-                    EntitiesState.storeUd.dispatch(newState);
-
-                    this.forceUpdate();
+                    this.umetnickaDelaGet(data);
                 });
 
         }, 5000);
