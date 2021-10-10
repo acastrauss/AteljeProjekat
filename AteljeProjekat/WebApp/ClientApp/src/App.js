@@ -9,6 +9,7 @@ import './custom.css';
 import './Grid.css';
 import { EntityFormContainer } from './EntityFormContainer';
 import { Details } from './Details';
+import { UpdateForm } from './EntityForms/UpdateForm';
 
 
 export default class App extends Component {
@@ -33,6 +34,9 @@ export default class App extends Component {
                     </div>
                     <div className='grid-details'>
                         <Details/>
+                    </div>
+                    <div className='grid-update'>
+                        <UpdateForm data={new Object() }/>
                     </div>
                 </div>
             </header>

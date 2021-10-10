@@ -22,5 +22,10 @@
 
 .grid-details{
     grid-column: 14/16;
-    grid-row: 3/end;
+    grid-row: 5/end;
+}
+
+.grid-update{
+    grid-column: 14/16;
+    grid-row: 1/3
 }

@@ -104,3 +104,22 @@ export function activateReducer(state = initActive, action) {
 };
 
 export const storeActivate = createStore(activateReducer);
+
+export const CHANGE_ENTITY = 'CHANGE_ENTITY';
+
+export const initChange = {
+    entity: new Object()
+};
+
+export function changeReducer(state = initChange, action) {
+    if (action.type == CHANGE_ENTITY) {
+        return {
+            entity: action.entity
+        };
+    }
+    else {
+        return initChange;
+    }
+};
+
+export const storeChange = createStore(changeReducer);

@@ -111,6 +111,8 @@ export class UmetnickoDeloForm extends React.Component {
             body: JSON.stringify(ud)
         };
 
+        console.log(ud);
+
         fetch('api/UmetnickoDelo/Create', reqH)
             .then(response => response.json())
             .then(data => {

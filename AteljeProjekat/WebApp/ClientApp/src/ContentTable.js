@@ -3,7 +3,6 @@ import './ContentTable.css'
 import { umetnickiPravacEnum, umetnickiStilEnum } from "./Enums";
 import * as EntitiesState from './EntitiesState';
 import { store } from "./LoginCredentials";
-import { get } from "jquery";
 
 let dataHeader = [
     'Adresa:', 'PIB:', 'MBR:'
@@ -27,6 +26,16 @@ let btnsText = [
     'Ateljei', 'Umetnicka dela', 'Autori'
 ];
 
+function GetEntityForId(entityType, id) {
+    return new Promise((resolve, reject) => {
+        fetch(`api/${entityType}/GetOne?id=${id}`)
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            });
+    });
+}
+
 export class ContentTable extends React.Component{
     constructor(props){
         super(props);
@@ -41,6 +50,7 @@ export class ContentTable extends React.Component{
         this.detailsSet = this.detailsSet.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.umetnickaDelaGet = this.umetnickaDelaGet.bind(this);
+        this.onChangeClick = this.onChangeClick.bind(this);
     }
 
     umetnickaDelaGet(data) {
@@ -204,6 +214,18 @@ export class ContentTable extends React.Component{
         }
     }
 
+    async onChangeClick(e) {
+        let id = e.target.dataset.id;
+
+        let entity = await GetEntityForId(
+            EntitiesState.storeActivate.getState().activate, id
+        );
+
+        EntitiesState.storeChange.dispatch({
+            type: EntitiesState.CHANGE_ENTITY,
+            entity: entity
+        });
+    }
 
 
     render(){
@@ -237,6 +259,7 @@ export class ContentTable extends React.Component{
                 <button
                     className="tableBtn"
                     data-id={d.id}
+                    onClick={this.onChangeClick}
                 >Izmeni</button>
             </td>)
             td.push(<td>
