@@ -39,12 +39,28 @@ export class UpdateForm extends React.Component {
             
             if (key.toLowerCase().includes('atelje')) {
                 // radi select za atelje
+                let ateljeOpts = [];
+
+                EntitiesState.storeAtelje.getState().ateljes.forEach(a => {
+                    ateljeOpts.push(<option value={a.Adresa} data-idAtelje={a.id}>
+                        {a.Adresa}
+                    </option>);
+                });
+
+                inputs.push(<div>
+                    <label className="labelLogin">Atelje:</label>
+                    <select className="input">
+                        {ateljeOpts}
+                    </select>
+                </div>);
+
                 return 0;
             };
 
             if (!(
-                key.toLowerCase().includes('id') ||
-                typeof value === 'object')) {
+                    key.toLowerCase().includes('id') ||
+                typeof value === 'object'
+            )) {
 
                 if (
                     key.toLowerCase().includes('pravac')
