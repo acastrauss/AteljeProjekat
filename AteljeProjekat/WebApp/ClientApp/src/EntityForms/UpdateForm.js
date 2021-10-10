@@ -9,7 +9,14 @@ var capitalize = (str) => {
 
 var unsubChange;
 
-let inputsVals = [];
+let inputsVals = [
+    
+];
+
+
+var parseDateStr = (dateStr) => {
+    return dateStr.split('T')[0];
+}
 
 export class UpdateForm extends React.Component {
     constructor(props) {
@@ -17,6 +24,9 @@ export class UpdateForm extends React.Component {
         this.state = {
             data: this.props.data
         };
+
+        this.onInputChange = this.onInputChange.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
     componentWillMount() {
@@ -24,6 +34,8 @@ export class UpdateForm extends React.Component {
             this.setState({
                 data: EntitiesState.storeChange.getState().entity
             });
+
+            console.log(this.state.data);
         })
     }
 
@@ -31,28 +43,60 @@ export class UpdateForm extends React.Component {
         unsubChange();
     }
 
+    onInputChange(e) {
+        
+        let key = e.target.dataset.key;
+        let val = e.target.value;
+
+        this.state.data[key] = val;
+
+        this.forceUpdate();
+    }
+
+    onSave() {
+
+    }
+
     render() {
 
         let inputs = [];
-
+        let iter = 0;
+        
         Object.entries(this.state.data).map(([key, value]) => {
-            
+
             if (key.toLowerCase().includes('atelje')) {
                 // radi select za atelje
                 let ateljeOpts = [];
 
                 EntitiesState.storeAtelje.getState().ateljes.forEach(a => {
-                    ateljeOpts.push(<option value={a.Adresa} data-idAtelje={a.id}>
-                        {a.Adresa}
-                    </option>);
+                    if (a.id === this.state.data.idAtelje) {
+                        
+                        ateljeOpts.push(<option value={a.Adresa} data-idatelje={a.id} selected>
+                            {a.Adresa}
+                        </option>);
+                    }
+                    else {
+
+                        ateljeOpts.push(<option value={a.Adresa} data-idatelje={a.id}>
+                            {a.Adresa}
+                        </option>);
+                    }
                 });
 
                 inputs.push(<div>
                     <label className="labelLogin">Atelje:</label>
-                    <select className="input">
+                    <select
+                        className="input"
+                        data-inputindx={iter}
+                        data-key={key}
+                        value={this.state.data[key].Adresa}
+                        onChange={this.onInputChange}
+                    >
                         {ateljeOpts}
                     </select>
                 </div>);
+
+                iter++;
 
                 return 0;
             };
@@ -69,7 +113,9 @@ export class UpdateForm extends React.Component {
                     let opts = [];
 
                     Enums.umetnickiPravacEnum.forEach(e => {
-                        if (e === value) {
+                        if (e == value) {
+                            inputsVals.push(e);
+                            
                             opts.push(
                                 <option value={e} selected>{e}</option>
                             )
@@ -83,12 +129,20 @@ export class UpdateForm extends React.Component {
 
                     inputs.push(<div>
                         <label className="labelLogin">
-                            {key}
+                            {capitalize(key)}
                         </label>
-                        <select className="input">
+                        <select
+                            className="input"
+                            data-inputindx={iter}
+                            data-key={key}
+                            value={this.state.data[key]}
+                            onChange={this.onInputChange}
+                        >
                             {opts}
                         </select>
                     </div>);
+
+                    iter++;
                 }
                 else if (
                     key.toLowerCase().includes('stil')
@@ -96,7 +150,9 @@ export class UpdateForm extends React.Component {
                     let opts = [];
 
                     Enums.umetnickiStilEnum.forEach(e => {
-                        if (e === value) {
+                        if (e == value) {
+                            inputsVals.push(e);
+
                             opts.push(
                                 <option value={e} selected>
                                     {e}
@@ -114,12 +170,20 @@ export class UpdateForm extends React.Component {
 
                     inputs.push(<div>
                         <label className="labelLogin">
-                            {key}
+                            {capitalize(key)}
                         </label>
-                        <select className="input">
+                        <select
+                            className="input"
+                            data-inputindx={iter}
+                            data-key={key}
+                            value={this.state.data[key]}
+                            onChange={this.onInputChange}
+                        >
                             {opts}
                         </select>
                     </div>);
+
+                    iter++;
                 }
                 else {
 
@@ -127,7 +191,8 @@ export class UpdateForm extends React.Component {
                         
                         let date = new Date(value.split('T')[0]);
                         let dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-                        console.log(dateStr);
+
+                        inputsVals.push(dateStr);
 
                         inputs.push(<div>
                             <label className="labelLogin">
@@ -136,11 +201,19 @@ export class UpdateForm extends React.Component {
                             <input
                                 type='date'
                                 className="input"
-                                value={dateStr}
+                                value={parseDateStr(this.state.data[key])}
+                                data-inputindx={iter}
+                                data-key={key}
+                                onChange={this.onInputChange}
                             />
                         </div>);
+
+                        iter++;
                     }
                     else {
+
+                        inputsVals.push(value);
+
                         inputs.push(<div>
                             <label className="labelLogin">
                                 {capitalize(key)}
@@ -148,15 +221,22 @@ export class UpdateForm extends React.Component {
                             <input
                                 type='text'
                                 className="input"
-                                value={value}
+                                value={this.state.data[key]}
+                                data-inputindx={iter}
+                                data-key={key}
+                                onChange={this.onInputChange}
+
                             />
                         </div>);
+
+                        iter++;
                     }
                 }
             }
             else if (Array.isArray(value)) {
                 if (value.length > 0)
                     if (typeof value[0] === 'string') {
+                        
                         inputs.push(<div>
                             <label className="labelLogin">
                                 {capitalize(key)}
@@ -164,10 +244,16 @@ export class UpdateForm extends React.Component {
                             <input
                                 type='text'
                                 className="input"
-                                value={value.join('')}
+                                value={this.state.data[key].join('')}
+                                data-inputindx={iter}
+                                data-key={key}
+                                onChange={this.onInputChange}
+
                             />
                         </div>);
                     }
+
+                iter++;
             }
 
         });
