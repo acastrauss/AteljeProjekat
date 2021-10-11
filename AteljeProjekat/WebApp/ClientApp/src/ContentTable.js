@@ -80,7 +80,7 @@ export class ContentTable extends React.Component{
     }
 
     componentDidMount() {
-        this.updateR1esults = setInterval(() => {
+        this.updateResults = setInterval(() => {
 
             fetch('api/Atelje/GetAll')
                 .then(response => response.json())

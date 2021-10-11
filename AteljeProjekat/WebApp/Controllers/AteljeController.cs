@@ -21,6 +21,11 @@ namespace WebApp.Controllers
             _invoker = new DBCRUDAteljeInvoker();
         }
 
+        [HttpGet]
+        public IEnumerable<Atelje.DBCRUDAteljeCommand> GetCommands()
+        {
+            return DBCRUDAteljeInvoker.komande;
+        }
 
         // GET: api/<AteljeController>
         [HttpGet]

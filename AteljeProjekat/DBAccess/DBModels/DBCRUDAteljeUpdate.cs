@@ -22,7 +22,7 @@ namespace Atelje {
 		private EntitetSistema entitetPre;
 
 		public DBCRUDAteljeUpdate(){
-
+			this.CommandType = COMMAND_TYPE.UPDATE;
 		}
 
 		~DBCRUDAteljeUpdate(){

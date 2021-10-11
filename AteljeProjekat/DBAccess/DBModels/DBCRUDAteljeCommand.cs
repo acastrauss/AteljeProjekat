@@ -15,7 +15,12 @@ using System.IO;
 
 using Atelje;
 namespace Atelje {
+	
+	public enum COMMAND_TYPE { CREATE, READ, UPDATE, DELETE};
+	
 	public class DBCRUDAteljeCommand : DBCRUD {
+
+		public COMMAND_TYPE CommandType { get; set; } 
 
 		public DBCRUDAteljeCommand(){
 

@@ -21,7 +21,7 @@ namespace Atelje {
 		private List<EntitetSistema> entitet;
 
 		public DBCRUDAteljeRead(){
-
+			this.CommandType = COMMAND_TYPE.READ;
 		}
 
 		~DBCRUDAteljeRead(){

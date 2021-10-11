@@ -22,12 +22,13 @@ namespace Atelje {
 		public EntitetSistema entiet { get; set; }
 
 		public DBCRUDAteljeCreate(){
-
+			this.CommandType = COMMAND_TYPE.CREATE;
 		}
 
 		public DBCRUDAteljeCreate(EntitetSistema entitetSistema)
         {
 			this.entiet = entitetSistema;
+			this.CommandType = COMMAND_TYPE.CREATE;
         }
 
 		~DBCRUDAteljeCreate(){

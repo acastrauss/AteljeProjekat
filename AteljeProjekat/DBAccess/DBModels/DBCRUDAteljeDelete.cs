@@ -23,12 +23,14 @@ namespace Atelje {
 
 		public DBCRUDAteljeDelete(){
 
+			this.CommandType = COMMAND_TYPE.DELETE;
 		}
 
 		public DBCRUDAteljeDelete(EntitetSistema entitetSistema)
         {
 			this.entitet = entitetSistema;
-        }
+			this.CommandType = COMMAND_TYPE.DELETE;
+		}
 
 		~DBCRUDAteljeDelete(){
 
