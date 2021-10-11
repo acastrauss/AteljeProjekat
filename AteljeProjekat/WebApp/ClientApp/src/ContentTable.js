@@ -227,6 +227,34 @@ export class ContentTable extends React.Component{
         });
     }
 
+    async onDouble(e) {
+        let id = e.target.dataset.id;
+
+        let entity = await GetEntityForId(
+            'Atelje', id
+        );
+
+        let reqH = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(entity)
+        };
+
+
+        fetch('api/Atelje/Double', reqH)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    alert('Doubled');
+                }
+                else {
+                    alert('Error');
+                }
+            });
+
+    }
 
     render(){
         let hElems = [];
@@ -254,32 +282,52 @@ export class ContentTable extends React.Component{
                 else
                     return 0;
             });
-            
-            td.push(<td>
+
+            let tdBtns = [];
+
+            tdBtns.push(<td>
                 <button
                     className="tableBtn"
                     data-id={d.id}
                     onClick={this.onChangeClick}
                 >Izmeni</button>
-            </td>)
-            td.push(<td>
+            </td>);
+            tdBtns.push(<td>
                 <button
                     className="tableBtn"
                     data-id={d.id}
                     onClick={this.onDelete}
                 >Izbrisi</button>
-            </td>)
-            td.push(<td>
+            </td>);
+            tdBtns.push(<td>
                 <button
                     className="tableBtn"
                     data-id={d.id}
                     onClick={this.detailsSet}
                 >Detalji</button>
-            </td>)
+            </td>);
 
+            if (EntitiesState.storeActivate.getState().activate === 'Atelje') {
+                tdBtns.push(<td>
+                    <button
+                        className="tableBtn"
+                        data-id={d.id}
+                        onClick={this.onDouble}
+                    >
+                        Dupliraj
+                </button>
+                </td>);
+            }
+            
             dataEl.push(
                 <tr>
                     {td}
+                </tr>
+            );
+
+            dataEl.push(
+                <tr>
+                    {tdBtns}
                 </tr>
             )
         }

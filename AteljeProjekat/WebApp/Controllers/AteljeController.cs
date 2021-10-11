@@ -75,6 +75,25 @@ namespace WebApp.Controllers
             return (Atelje.Atelje)db.Read().Where(x => ((Atelje.Atelje)x).Id == id).First();
         }
 
+        [HttpPost]
+
+        public Atelje.Atelje Double([FromBody] object value)
+        {
+            try
+            {
+                var atelje = JsonConvert.DeserializeObject<Atelje.Atelje>(value.ToString());
+                DBCRUDAteljeCreate db = new DBCRUDAteljeCreate();
+                db.entiet = atelje;
+                _invoker.AddComand(db);
+                _invoker.ExecuteLast();
+                return atelje;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         // POST api/<AteljeController>
         [HttpPost]
         public Atelje.Atelje Create([FromBody] object value)

@@ -13,9 +13,13 @@ namespace WebApp
     {
         public static void Main(string[] args)
         {
-            Atelje.Initialize initialize = new Atelje.Initialize();
-            initialize.DoInit();
+            //Task.Run(() =>
+            //{
+            //    Atelje.Initialize initialize = new Atelje.Initialize();
+            //    initialize.DoInit();
+            //});
 
+            
             CreateHostBuilder(args).Build().Run();
         }
 
