@@ -22,9 +22,39 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
+        public bool Redo()
+        {
+            try
+            {
+                _invoker.Redo();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        [HttpGet]
+        public bool Undo()
+        {
+            try
+            {
+                _invoker.Undo();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        [HttpGet]
         public IEnumerable<Atelje.DBCRUDAteljeCommand> GetCommands()
         {
-            return DBCRUDAteljeInvoker.komande;
+            return DBCRUDAteljeInvoker.komande.Count != 0 ?
+                DBCRUDAteljeInvoker.komande.GetRange(0, DBCRUDAteljeInvoker.cntComm + 1) :
+                new List<DBCRUDAteljeCommand>();
         }
 
         // GET: api/<AteljeController>

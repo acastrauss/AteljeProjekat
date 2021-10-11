@@ -13,6 +13,7 @@
     font-size: large;
 }
 
+
 .tableBtn{
     background-color: darkcyan;
     border-radius: 10px;
@@ -25,4 +26,19 @@
 .btnsHeader{
     justify-content: space-evenly;
     width: 1000px;
+}
+
+.commandTable {
+    background-color: rgb(199, 219, 219);
+    border-radius: 10px;
+    justify-content: space-evenly;
+    width: 100px;
+    align-items: center;
+    color: rgb(23, 27, 32);
+}
+
+.commandTable * {
+    border: 1px solid rgb(23, 27, 32);
+    padding: 10px;
+    font-size: medium;
 }

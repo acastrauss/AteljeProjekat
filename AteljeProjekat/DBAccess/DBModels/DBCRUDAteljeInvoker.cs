@@ -18,7 +18,9 @@ namespace Atelje {
 	public class DBCRUDAteljeInvoker {
 
 		public static List<DBCRUDAteljeCommand> komande = new List<DBCRUDAteljeCommand>();
-		private int cntComm = 0;
+		public static int cntComm = 0;
+
+		// a, b, c, d,
 
 		public void AddComand(DBCRUDAteljeCommand command)
         {
@@ -48,11 +50,11 @@ namespace Atelje {
 
 		public void Redo(){
 			if(cntComm + 1 < komande.Count)
-				komande[cntComm++].Execute();
+				komande[++cntComm].Execute();
 		}
 
 		public void Undo(){
-			if(cntComm > 0)
+			if(cntComm > -1)
 				komande[cntComm--].Unexecute();
 		}
 

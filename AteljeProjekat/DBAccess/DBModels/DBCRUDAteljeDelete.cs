@@ -59,6 +59,9 @@ namespace Atelje {
 
 				if (currAt.Count() != 0)
 				{
+					konverzija = new DBConvertAtelje();
+					entitet = konverzija.ConvertToWebModel(currAt.First());
+
 					db.Ateljes.Remove(currAt.First());
 					db.SaveChanges();
 				}

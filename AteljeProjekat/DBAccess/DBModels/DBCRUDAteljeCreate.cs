@@ -45,6 +45,11 @@ namespace Atelje {
 				konverzija = new DBConvertAtelje();
 				db.Ateljes.Add((DBAccess.Atelje)konverzija.ConvertToDBModel(entitet));
 				db.SaveChanges();
+
+				var a = ((Atelje)entiet);
+
+				var adb = db.Ateljes.Where(x => x.MBR.Equals(new string(a.Mmbr)) && x.PIB.Equals(new string(a.Pib))).First();
+				((Atelje)this.entiet).Id = adb.Id;
 			}
 		}
 

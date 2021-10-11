@@ -1,6 +1,9 @@
 ﻿import React from 'react';
 import './ContentTable.css';
 
+let commandsEnum = [
+    'Dodat Atelje', 'Procitan Atelje', 'Promenjen Atelje', 'Obrisan Atelje'
+];
 
 let commands = [];
 
@@ -10,6 +13,8 @@ export class Commands extends React.Component {
 
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
+        this.undo = this.undo.bind(this);
+        this.redo = this.redo.bind(this);
     }
 
     componentDidMount() {
@@ -23,7 +28,33 @@ export class Commands extends React.Component {
         }, 3000);
     }
 
+    undo(type) {
+        fetch(`api/Atelje/Undo`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    commands.splice(commands.length - 1, 1);
+                    alert('Uspesna akcija.');
+                    this.forceUpdate();
+                }
+                else
+                    alert('Neuspesna.');
+            });
+    }
 
+    redo(type) {
+        fetch(`api/Atelje/Redo`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    commands.splice(commands.length - 1, 1);
+                    alert('Uspesna akcija.');
+                    this.forceUpdate();
+                }
+                else
+                    alert('Neuspesna.');
+            });
+    }
 
     componentWillUnmount() {
         clearInterval(this.updateResults);
@@ -37,7 +68,7 @@ export class Commands extends React.Component {
         commands.forEach(c => {
             commandsRender.push(<tr>
                 <td>
-                    {c.commandType}    
+                    {commandsEnum[c.commandType]}    
                 </td>
             </tr>);
         });
@@ -49,13 +80,17 @@ export class Commands extends React.Component {
                 <tr>
                     <td>
                         <button
-                            className="tableBtn">
+                            className="tableBtn"
+                            onClick={this.undo}
+                        >
                             Undo
                         </button>
                     </td>
                     <td>
                         <button
-                            className="tableBtn">
+                            className="tableBtn"
+                            onClick={this.redo}
+                        >
                             Redo
                         </button>
                     </td>
@@ -63,7 +98,8 @@ export class Commands extends React.Component {
         }
 
         return <table
-            className="contentTable">
+            className="commandTable"
+            >
             {header}
             {commandsRender}
         </table>
