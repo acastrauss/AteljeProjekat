@@ -19,6 +19,9 @@ using System.Linq;
 namespace Atelje {
 	public class DBCRUDUmetnik : DBCRUD {
 
+		public int CreatedId { get; set; }
+		
+
 		public DBCRUDUmetnik(){
 
 		}
@@ -27,16 +30,45 @@ namespace Atelje {
 
 		}
 
-		/// 
-		/// <param name="entitet"></param>
-		public override void Create(EntitetSistema entitet){
+		public Autor Exists(Autor autor)
+        {
+			Autor retVal = null;
 			AteljeDB db;
             lock (db = AteljeDB.Instance())
             {
 				konverzija = new DBConvertAutor();
+				var aNew = (DBAccess.Autor)konverzija.ConvertToDBModel(autor);
 
-				db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(entitet));
+				var find = db.Autors.Where(x =>
+					x.GodinaRodjenja == (aNew.GodinaRodjenja) &&
+					x.GodinaSmrti == (aNew.GodinaSmrti) &&
+					x.Ime ==(aNew.Ime) &&
+					x.Prezime == (aNew.Prezime) &&
+					x.UmetnickiPravac == (int)aNew.UmetnickiPravac
+					);
+
+				if (find.ToList().Count > 0)
+                {
+					retVal = (Autor)konverzija.ConvertToWebModel(find.First());
+                }
+            }
+
+			return retVal;
+        }
+
+		/// 
+		/// <param name="entitet"></param>
+		public override void Create(EntitetSistema entitet){
+			AteljeDB db;
+			lock (db = AteljeDB.Instance())
+            {
+				konverzija = new DBConvertAutor();
+
+				var dbEnt = (DBAccess.Autor)konverzija.ConvertToDBModel(entitet);
+
+				db.Autors.Add(dbEnt);
 				db.SaveChanges();
+				CreatedId = dbEnt.Id;
 			}
 		}
 

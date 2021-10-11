@@ -27,6 +27,29 @@ namespace Atelje {
 
 		}
 
+		public bool Exists(UmetnickoDelo umetnickoDelo)
+        {
+			bool retVal = false;
+			AteljeDB db;
+            lock (db = AteljeDB.Instance())
+            {
+				konverzija = new DBConvertUmetnickoDelo();
+				var udNew = (DBAccess.UmetnickoDelo)konverzija.ConvertToDBModel(umetnickoDelo);
+				
+				var find = db.UmetnickoDeloes.Where(x =>
+				x.AteljeId == udNew.AteljeId &&
+				x.AutorId == udNew.AutorId &&
+				x.Naziv == (udNew.Naziv) &&
+				x.Pravac == (int)udNew.Pravac &&
+				x.Stil == (int)udNew.Stil
+				);
+
+				if(find.Count() > 0)
+					retVal = true;
+            }
+			return retVal;
+        }
+
 		/// 
 		/// <param name="entitet"></param>
 		public override void Create(EntitetSistema entitet){
