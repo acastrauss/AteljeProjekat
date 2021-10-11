@@ -72,10 +72,25 @@ namespace Atelje {
 
 				if (currAt.Count() != 0)
 				{
+					var udArr = new List<DBAccess.UmetnickoDelo>();
+
+					foreach (var ud in db.UmetnickoDeloes)
+					{
+						if (ud.AteljeId == currAt.First().Id)
+						{
+							udArr.Add(ud);
+							db.UmetnickoDeloes.Remove(ud);
+						}
+					}
+
+					db.SaveChanges();
+
 					konverzija = new DBConvertAtelje();
 
 					db.Ateljes.Remove(currAt.First());
-					db.Ateljes.Add((DBAccess.Atelje)konverzija.ConvertToDBModel(noviEntiteti));
+					var noviDB = (DBAccess.Atelje)konverzija.ConvertToDBModel(noviEntiteti);
+					db.Ateljes.Add(noviDB);
+					db.SaveChanges();
 				}
 			}
 		}

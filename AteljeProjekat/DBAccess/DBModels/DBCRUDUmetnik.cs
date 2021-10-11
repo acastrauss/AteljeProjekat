@@ -82,13 +82,28 @@ namespace Atelje {
 			AteljeDB db;
             lock (db = AteljeDB.Instance())
             {
-				if (db.Autors.Where(x => x.Id == a.Id).Count() != 0)
-				{
+				var currAt = db.Autors.Where(x => x.Id == a.Id);
+
+				if(currAt.Count() > 0)
+                {
+					var udArr = new List<DBAccess.UmetnickoDelo>();
+
+					foreach (var ud in db.UmetnickoDeloes)
+					{
+						if (ud.AutorId == currAt.First().Id)
+						{
+							udArr.Add(ud);
+							db.UmetnickoDeloes.Remove(ud);
+						}
+					}
+
+					db.SaveChanges();
+
 					konverzija = new DBConvertAutor();
 
-					var curr = db.Autors.Where(x => x.Id == a.Id).First();
-					db.Autors.Remove(curr);
-					db.Autors.Add((DBAccess.Autor)konverzija.ConvertToDBModel(a));
+					db.Autors.Remove(currAt.First());
+					var noviDb = (DBAccess.Autor)konverzija.ConvertToDBModel(noviEntitet);
+					db.Autors.Add(noviDb);
 					db.SaveChanges();
 				}
 			}

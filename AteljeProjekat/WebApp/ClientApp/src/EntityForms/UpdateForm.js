@@ -35,7 +35,6 @@ export class UpdateForm extends React.Component {
                 data: EntitiesState.storeChange.getState().entity
             });
 
-            console.log(this.state.data);
         })
     }
 
@@ -54,13 +53,46 @@ export class UpdateForm extends React.Component {
     }
 
     onSave() {
+        let entity = this.state.data;
+        let active = EntitiesState.storeActivate.getState().activate;
 
+        Object.entries(entity).map(([key, value]) => {
+            if (key.toLowerCase().includes('pravac') && typeof value === 'string')
+                entity[key] = Enums.GetIndxFromPravac(value);
+
+            else if (key.toLowerCase().includes('stil') && typeof value === 'string')
+                entity[key] = Enums.GetIndxFromStil(value);
+
+            else if (key.toLowerCase().includes('mbr'))
+                if (!Array.isArray(value))
+                    entity[key] = value.split('');
+
+            else if (key.toLowerCase().includes('pib'))
+                if (!Array.isArray(value))
+                    entity[key] = value.split('');
+        });
+
+        let reqH = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(entity)
+        };
+
+        fetch(`api/${active}/Update`, reqH)
+            .then(response => response.json())
+            .then(data => {
+                if (data)
+                    alert('Updated');
+                else
+                    alert('Error');
+            });
     }
 
     render() {
 
         let inputs = [];
-        let iter = 0;
         
         Object.entries(this.state.data).map(([key, value]) => {
 
@@ -87,7 +119,6 @@ export class UpdateForm extends React.Component {
                     <label className="labelLogin">Atelje:</label>
                     <select
                         className="input"
-                        data-inputindx={iter}
                         data-key={key}
                         value={this.state.data[key].Adresa}
                         onChange={this.onInputChange}
@@ -95,8 +126,6 @@ export class UpdateForm extends React.Component {
                         {ateljeOpts}
                     </select>
                 </div>);
-
-                iter++;
 
                 return 0;
             };
@@ -133,7 +162,6 @@ export class UpdateForm extends React.Component {
                         </label>
                         <select
                             className="input"
-                            data-inputindx={iter}
                             data-key={key}
                             value={this.state.data[key]}
                             onChange={this.onInputChange}
@@ -142,7 +170,6 @@ export class UpdateForm extends React.Component {
                         </select>
                     </div>);
 
-                    iter++;
                 }
                 else if (
                     key.toLowerCase().includes('stil')
@@ -174,7 +201,6 @@ export class UpdateForm extends React.Component {
                         </label>
                         <select
                             className="input"
-                            data-inputindx={iter}
                             data-key={key}
                             value={this.state.data[key]}
                             onChange={this.onInputChange}
@@ -183,7 +209,6 @@ export class UpdateForm extends React.Component {
                         </select>
                     </div>);
 
-                    iter++;
                 }
                 else {
 
@@ -202,13 +227,11 @@ export class UpdateForm extends React.Component {
                                 type='date'
                                 className="input"
                                 value={parseDateStr(this.state.data[key])}
-                                data-inputindx={iter}
                                 data-key={key}
                                 onChange={this.onInputChange}
                             />
                         </div>);
 
-                        iter++;
                     }
                     else {
 
@@ -222,14 +245,12 @@ export class UpdateForm extends React.Component {
                                 type='text'
                                 className="input"
                                 value={this.state.data[key]}
-                                data-inputindx={iter}
                                 data-key={key}
                                 onChange={this.onInputChange}
 
                             />
                         </div>);
 
-                        iter++;
                     }
                 }
             }
@@ -245,15 +266,12 @@ export class UpdateForm extends React.Component {
                                 type='text'
                                 className="input"
                                 value={this.state.data[key].join('')}
-                                data-inputindx={iter}
                                 data-key={key}
                                 onChange={this.onInputChange}
 
                             />
                         </div>);
                     }
-
-                iter++;
             }
 
         });
@@ -262,6 +280,7 @@ export class UpdateForm extends React.Component {
             inputs.push(<div>
                 <button
                     className="loginbtn"
+                    onClick={this.onSave}
                 >
                     Sacuvaj
                     </button>

@@ -59,7 +59,7 @@ namespace Atelje {
 					Naziv = ud.Naziv,
 					Pravac = (UmetnickiPravac)ud.Pravac,
 					Stil = (Stil)ud.Stil,
-					IdAtelje = ud.AteljeId,
+					IdAtelje = (int)ud.AteljeId,
 					IdUmetnik = ud.AutorId
 				};
             }

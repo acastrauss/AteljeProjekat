@@ -21,7 +21,7 @@ namespace DBAccess
 
         public int AutorId { get; set; }
 
-        public int AteljeId { get; set; }
+        public int? AteljeId { get; set; }
 
         public virtual Atelje Atelje { get; set; }
 

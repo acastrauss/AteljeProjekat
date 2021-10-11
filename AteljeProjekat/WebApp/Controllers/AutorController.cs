@@ -50,6 +50,23 @@ namespace WebApp.Controllers
 
         }
 
+        [HttpPost]
+        public Autor Update([FromBody] object value)
+        {
+            try
+            {
+                var a = JsonConvert.DeserializeObject<Atelje.Autor>(value.ToString());
+                DBCRUD db = new DBCRUDUmetnik();
+                db.Update(a);
+                return a;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+        }
+
         // PUT api/<AutorController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

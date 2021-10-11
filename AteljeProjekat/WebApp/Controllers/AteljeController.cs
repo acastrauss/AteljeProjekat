@@ -60,6 +60,24 @@ namespace WebApp.Controllers
 
         }
 
+        [HttpPost]
+        public Atelje.Atelje Update([FromBody] object value)
+        {
+            try
+            {
+                var a = JsonConvert.DeserializeObject<Atelje.Atelje>(value.ToString());
+                DBCRUDAteljeUpdate db = new DBCRUDAteljeUpdate();
+                db.EntitetPosle = a;
+                _invoker.AddComand(db);
+                _invoker.ExecuteLast();
+                return a;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         // PUT api/<AteljeController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

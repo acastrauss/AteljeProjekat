@@ -19,7 +19,8 @@ namespace WebApp.Controllers
         public IEnumerable<Atelje.UmetnickoDelo> GetAll()
         {
             Atelje.DBCRUD db = new Atelje.DBCRUDUmetnickoDelo();
-            return db.Read().Select(x => (Atelje.UmetnickoDelo)x);
+            var uds = db.Read();
+            return uds.Select(x => (Atelje.UmetnickoDelo)x);
         }
 
         [HttpGet]
@@ -42,6 +43,22 @@ namespace WebApp.Controllers
                 return ud;
             }
             catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        [HttpPost]
+        public UmetnickoDelo Update([FromBody] object value)
+        {
+            try
+            {
+                var ud = JsonConvert.DeserializeObject<Atelje.UmetnickoDelo>(value.ToString());
+                DBCRUD db = new DBCRUDUmetnickoDelo();
+                db.Update(ud);
+                return ud;
+            }
+            catch (Exception)
             {
                 return null;
             }
