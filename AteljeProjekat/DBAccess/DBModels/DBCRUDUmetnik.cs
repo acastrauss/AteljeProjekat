@@ -81,6 +81,12 @@ namespace Atelje {
 				if (db.Autors.Where(x => x.Id == id).Count() != 0)
 				{
 					db.Autors.Remove(db.Autors.Where(x => x.Id == id).First());
+					var dela = db.UmetnickoDeloes.Where(x => x.AutorId == id);
+					if(dela.Count() > 0)
+                    {
+						db.UmetnickoDeloes.RemoveRange(dela);
+                    }
+
 					db.SaveChanges();
 				}
 				else

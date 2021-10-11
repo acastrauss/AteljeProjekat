@@ -29,6 +29,14 @@ namespace Atelje {
 		/// <param name="log"></param>
 		/// <param name="idKorisnika"></param>
 		public void UpisiLog(LogPodatak log, int idKorisnika){
+			var logDir = Directory.GetCurrentDirectory();
+
+			var pathLog = Path.Combine(logDir, "UsersLog", String.Format("{0}.csv", idKorisnika));
+
+			var csv = String.Format("{0},{1},{2}\n",
+				log.Vreme.ToString(), Enum.GetName(typeof(LogTip), log.Tip), log.Poruka);
+
+			File.AppendAllText(pathLog, csv);
 
 		}
 

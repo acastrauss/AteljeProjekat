@@ -35,16 +35,29 @@ namespace WebApp.Controllers
         [HttpPost]
         public Atelje.Autor Create([FromBody] object value)
         {
+            LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+
             try
             {
                 var a = JsonConvert.DeserializeObject<Atelje.Autor>(value.ToString());
                 a.UmetnickaDela = new List<UmetnickoDelo>();
                 DBCRUD db = new DBCRUDUmetnik();
                 db.Create(a);
+
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.INFO;
+                logPodatak.Poruka = String.Format("Napravljen autor id:{0}", a.Id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return a;
             }
             catch (Exception)
             {
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.ERROR;
+                logPodatak.Poruka = String.Format("Greska prilikom pravljenja autora");
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return null;
             }
 
@@ -53,15 +66,26 @@ namespace WebApp.Controllers
         [HttpPost]
         public Autor Update([FromBody] object value)
         {
+            LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+
             try
             {
                 var a = JsonConvert.DeserializeObject<Atelje.Autor>(value.ToString());
                 DBCRUD db = new DBCRUDUmetnik();
                 db.Update(a);
+
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.INFO;
+                logPodatak.Poruka = String.Format("Izmenjen autor id:{0}", a.Id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
                 return a;
             }
             catch (Exception e)
             {
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.ERROR;
+                logPodatak.Poruka = String.Format("Greska prilikom izmene autora");
+                logPodatak.sistemLog.UpisiLog(logPodatak);
                 return null;
             }
 
@@ -76,6 +100,8 @@ namespace WebApp.Controllers
         [HttpDelete]
         public int Delete([FromQuery] int id)
         {
+            LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+
             try
             {
                 DBCRUD db = new DBCRUDUmetnik();
@@ -89,10 +115,20 @@ namespace WebApp.Controllers
                 }
 
                 db.Delete(id);
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.INFO;
+                logPodatak.Poruka = String.Format("Izbrisan autor id:{0}", id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return id;
             }
             catch (Exception e)
             {
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.ERROR;
+                logPodatak.Poruka = String.Format("Greska prilikom brisanja autora id:{0}", id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return -1;
             }
         }

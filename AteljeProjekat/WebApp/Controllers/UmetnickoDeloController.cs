@@ -35,15 +35,27 @@ namespace WebApp.Controllers
         [HttpPost]
         public Atelje.UmetnickoDelo Create([FromBody] object value)
         {
+            LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+
             try
             {
                 var ud = JsonConvert.DeserializeObject<Atelje.UmetnickoDelo>(value.ToString());
                 Atelje.DBCRUD db = new Atelje.DBCRUDUmetnickoDelo();
                 db.Create(ud);
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.INFO;
+                logPodatak.Poruka = String.Format("Kreirano umetnicko delo id:{0}", ud.Id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return ud;
             }
             catch (Exception e)
             {
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.ERROR;
+                logPodatak.Poruka = String.Format("Greska prilikom kreiranja umetnickog dela");
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return null;
             }
         }
@@ -51,15 +63,27 @@ namespace WebApp.Controllers
         [HttpPost]
         public UmetnickoDelo Update([FromBody] object value)
         {
+            LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+
             try
             {
                 var ud = JsonConvert.DeserializeObject<Atelje.UmetnickoDelo>(value.ToString());
                 DBCRUD db = new DBCRUDUmetnickoDelo();
                 db.Update(ud);
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.INFO;
+                logPodatak.Poruka = String.Format("Izmenjeno umetnicko delo id:{0}", ud.Id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return ud;
             }
             catch (Exception)
             {
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.ERROR;
+                logPodatak.Poruka = String.Format("Greska prilikom izmene umetnickog dela");
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return null;
             }
         }
@@ -74,14 +98,26 @@ namespace WebApp.Controllers
         [HttpDelete]
         public int Delete([FromQuery]int id)
         {
+            LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+
             try
             {
                 DBCRUD db = new DBCRUDUmetnickoDelo();
                 db.Delete(id);
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.INFO;
+                logPodatak.Poruka = String.Format("Izbrisano umetnicko delo id:{0}", id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return id;
             }
             catch (Exception e)
             {
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.ERROR;
+                logPodatak.Poruka = String.Format("Greska prilikom brisanja umetnickog dela id:{0}", id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return -1;
             }
         }

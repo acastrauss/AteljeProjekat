@@ -58,7 +58,9 @@ export class ContentTable extends React.Component{
 
         for (let i = 0; i < data.length; i++) {
             let d = data[i];
-            
+
+            if (d === null) continue;
+
             jsonUds.push({
                 naziv: d.naziv,
                 pravac: umetnickiPravacEnum[d.pravac],
