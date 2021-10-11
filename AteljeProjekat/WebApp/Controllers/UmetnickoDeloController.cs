@@ -28,7 +28,24 @@ namespace WebApp.Controllers
         {
             DBCRUD db = new DBCRUDUmetnickoDelo();
 
-            return (Atelje.UmetnickoDelo)db.Read().Where(x => ((Atelje.UmetnickoDelo)x).Id == id).First();
+            var uds = db.Read();
+
+            try
+            {
+                foreach (var ud in uds)
+                {
+                    if(((Atelje.UmetnickoDelo)ud).Id == id)
+                    {
+                        return (Atelje.UmetnickoDelo)ud;
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         // POST api/<UmetnickoDeloController>

@@ -2,6 +2,7 @@
 import * as EntitiesState from './../EntitiesState';
 import * as Enums from './../Enums';
 import './../ContentTable.css';
+import { store } from '../LoginCredentials';
 
 var capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1); 
@@ -76,6 +77,9 @@ export class UpdateForm extends React.Component {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
+            },
+            headers: {
+                'userId': store.getState().userId
             },
             body: JSON.stringify(entity)
         };

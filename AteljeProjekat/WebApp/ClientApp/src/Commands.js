@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import './ContentTable.css';
+import { store } from './LoginCredentials';
 
 let commandsEnum = [
     'Dodat Atelje', 'Procitan Atelje', 'Promenjen Atelje', 'Obrisan Atelje'
@@ -29,7 +30,14 @@ export class Commands extends React.Component {
     }
 
     undo(type) {
-        fetch(`api/Atelje/Undo`)
+
+        let reqH = {
+            headers: {
+                'userId': store.getState().userId
+            }
+        };
+
+        fetch(`api/Atelje/Undo`, reqH)
             .then(response => response.json())
             .then(data => {
                 if (data) {
@@ -43,7 +51,14 @@ export class Commands extends React.Component {
     }
 
     redo(type) {
-        fetch(`api/Atelje/Redo`)
+
+        let reqH = {
+            headers: {
+                'userId': store.getState().userId
+            }
+        };
+
+        fetch(`api/Atelje/Redo`, reqH)
             .then(response => response.json())
             .then(data => {
                 if (data) {

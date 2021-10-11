@@ -1,6 +1,7 @@
 ﻿import React from 'react'
 import { umetnickiPravacEnum, umetnickiStilEnum, GetIndxFromPravac, GetIndxFromStil } from "./../Enums";
 import * as EntitiesState from './../EntitiesState';
+import * as LoginCredentials from './../LoginCredentials';
 
 let arrInputs = [
     'naziv', 'pravac', 'stil', 'atelje', 'autor'
@@ -107,6 +108,9 @@ export class UmetnickoDeloForm extends React.Component {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
+            },
+            headers: {
+                'userId': LoginCredentials.store.getState().userId
             },
             body: JSON.stringify(ud)
         };

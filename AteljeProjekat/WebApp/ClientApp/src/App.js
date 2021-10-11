@@ -11,10 +11,29 @@ import { EntityFormContainer } from './EntityFormContainer';
 import { Details } from './Details';
 import { UpdateForm } from './EntityForms/UpdateForm';
 import { Commands } from './Commands';
+import * as LoginCredentials from './LoginCredentials';
 
+var unsubLogin;
 
 export default class App extends Component {
   static displayName = App.name;
+    constructor(props) {
+        super(props);
+
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    }
+
+
+    componentDidMount() {
+        LoginCredentials.store.subscribe(() => {
+            this.forceUpdate();
+        });
+    }
+
+    componentWillUnmount() {
+        unsubLogin();
+    }
 
   render () {
     return (
@@ -24,24 +43,43 @@ export default class App extends Component {
                     <div className='grid-login'>
                         <LogIn />
                     </div>
-                    <div className='grid-contentTable'>
-                        <div className="tableDiv">
+                    <div
+                        className='grid-contentTable'
+                        hidden={LoginCredentials.store.getState().userId == -1}
+                    >
+                        <div
+                            className="tableDiv"
+                            hidden={LoginCredentials.store.getState().userId == -1}
+                        >
                             <ContentTable></ContentTable>
                         </div>
                     </div>
-                    <div className='grid-entityFormContainer'>
+                    <div
+                        className='grid-entityFormContainer'
+                        hidden={LoginCredentials.store.getState().userId == -1}
+                    >
                         <EntityFormContainer>
                         </EntityFormContainer>
                     </div>
-                    <div className='grid-details'>
-                        <Details/>
+                    <div
+                        className='grid-details'
+                        hidden={LoginCredentials.store.getState().userId == -1}
+                    >
+                        <Details />
                     </div>
-                    <div className='grid-update'>
-                        <UpdateForm data={new Object() }/>
+                    <div
+                        className='grid-update'
+                        hidden={LoginCredentials.store.getState().userId == -1}
+                    >
+                        <UpdateForm data={new Object()} />
                     </div>
-                    <div className='grid-commands'>
+                    <div
+                        className='grid-commands'
+                        hidden={LoginCredentials.store.getState().userId == -1}
+                    >
                         <Commands />
                     </div>
+                    
                 </div>
             </header>
         </div>

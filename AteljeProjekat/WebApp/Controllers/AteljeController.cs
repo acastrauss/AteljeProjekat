@@ -25,6 +25,8 @@ namespace WebApp.Controllers
         public bool Redo()
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+            int userId = -1;
+            Int32.TryParse(Request.Headers["userId"], out userId);
 
             try
             {
@@ -33,6 +35,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.INFO;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
                 return true;
             }
             catch (Exception)
@@ -41,6 +44,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.ERROR;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
                 return false;
             }
         }
@@ -49,6 +53,8 @@ namespace WebApp.Controllers
         public bool Undo()
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+            int userId = -1;
+            Int32.TryParse(Request.Headers["userId"], out userId);
 
             try
             {
@@ -57,6 +63,8 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.INFO;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
+
                 return true;
             }
             catch (Exception)
@@ -65,6 +73,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.ERROR;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
                 return false;
             }
         }
@@ -100,6 +109,8 @@ namespace WebApp.Controllers
         public Atelje.Atelje Double([FromBody] object value)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+            int userId = -1;
+            Int32.TryParse(Request.Headers["userId"], out userId);
 
             try
             {
@@ -112,6 +123,8 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.INFO;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
+
                 return atelje;
             }
             catch (Exception e)
@@ -120,6 +133,8 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.ERROR;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
+
                 return null;
             }
         }
@@ -129,6 +144,8 @@ namespace WebApp.Controllers
         public Atelje.Atelje Create([FromBody] object value)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+            int userId = -1;
+            Int32.TryParse(Request.Headers["userId"], out userId);
 
             try
             {
@@ -141,6 +158,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.INFO;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
 
                 return atelje;
             }
@@ -150,6 +168,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.ERROR;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
 
                 return null;
             }
@@ -160,6 +179,8 @@ namespace WebApp.Controllers
         public Atelje.Atelje Update([FromBody] object value)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+            int userId = -1;
+            Int32.TryParse(Request.Headers["userId"], out userId);
 
             try
             {
@@ -172,6 +193,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.INFO;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
 
                 return a;
             }
@@ -181,6 +203,8 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.ERROR;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
+
                 return null;
             }
         }
@@ -196,6 +220,8 @@ namespace WebApp.Controllers
         public int Delete([FromQuery] int id)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+            int userId = -1;
+            Int32.TryParse(Request.Headers["userId"], out userId);
 
             try
             {
@@ -211,6 +237,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.INFO;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
 
                 return id;
             }
@@ -220,6 +247,7 @@ namespace WebApp.Controllers
                 log.Tip = LogTip.ERROR;
                 log.Vreme = DateTime.Now;
                 log.sistemLog.UpisiLog(log);
+                log.korisnikLog.UpisiLog(log, userId);
 
                 return -1;
             }

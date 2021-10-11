@@ -28,10 +28,12 @@ let btnsText = [
 
 function GetEntityForId(entityType, id) {
     return new Promise((resolve, reject) => {
+
         fetch(`api/${entityType}/GetOne?id=${id}`)
             .then(response => response.json())
             .then(data => {
-                resolve(data);
+                if (data !== null)
+                    resolve(data);
             });
     });
 }
@@ -167,8 +169,14 @@ export class ContentTable extends React.Component{
         let id = e.target.dataset.id;
 
         let active = EntitiesState.storeActivate.getState().activate;
+        let reqH = {
+            headers: {
+                'userId': store.getState().userId
+            },
+            method: 'DELETE'
+        };
 
-        fetch(`api/${active}/Delete?id=${id}`, {method:'DELETE'})
+        fetch(`api/${active}/Delete?id=${id}`, reqH)
             .then(response => response.json())
             .then(data => {
                 if (data !== -1)
@@ -240,6 +248,9 @@ export class ContentTable extends React.Component{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
+            },
+            headers: {
+                'userId': store.getState().userId
             },
             body: JSON.stringify(entity)
         };

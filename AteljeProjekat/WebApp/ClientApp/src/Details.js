@@ -11,7 +11,8 @@ function GetEntityForId(id, entityType) {
         fetch(`/api/${entityType}/GetOne?id=${id}`)
             .then(response => response.json())
             .then(data => {
-                resolve(data);
+                if (data !== null)
+                    resolve(data);
             });
     });
 }
@@ -120,7 +121,8 @@ export class Details extends React.Component {
         fetch(`api/${active}/GetOne?id=${id}`)
             .then(response => response.json())
             .then(data => {
-                this.parseDataToShow(data);
+                if(data !== null)
+                    this.parseDataToShow(data);
             });
     }
 

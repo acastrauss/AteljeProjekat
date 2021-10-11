@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { store } from '../LoginCredentials';
 
 let arrInput = [
     'adresa', 'mbr', 'pib'
@@ -61,6 +62,9 @@ export class AteljeForm extends React.Component {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
+            },
+            headers: {
+                'userId': store.getState().userId
             },
             body: JSON.stringify(atelje)
         };

@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import './LogIn.css';
 import { sha256 } from "js-sha256";
+import * as LoginCredentials from './LoginCredentials';
 
 let arrInput = [
     'email', 'korisnicko ime', 'lozinka', 'ime', 'prezime'
@@ -80,6 +81,9 @@ export class RegisterForm extends React.Component{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
+            },
+            headers: {
+                'userId': LoginCredentials.store.getState().userId
             },
             body: JSON.stringify(values)
         };
