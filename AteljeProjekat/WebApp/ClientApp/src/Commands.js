@@ -78,8 +78,6 @@ export class Commands extends React.Component {
     render() {
         let commandsRender = [];
 
-        console.log(commands);
-
         commands.forEach(c => {
             commandsRender.push(<tr>
                 <td>

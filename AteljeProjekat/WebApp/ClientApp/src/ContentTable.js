@@ -26,6 +26,8 @@ let btnsText = [
     'Ateljei', 'Umetnicka dela', 'Autori'
 ];
 
+let activeSearch = 'Adresa';
+
 function GetEntityForId(entityType, id) {
     return new Promise((resolve, reject) => {
 
@@ -43,7 +45,10 @@ export class ContentTable extends React.Component{
         super(props);
         this.state = {
             headers : dataHeader,
-            data: EntitiesState.storeAtelje.getState().ateljes
+            data: EntitiesState.storeAtelje.getState().ateljes,
+            filteredData: EntitiesState.storeAtelje.getState().ateljes,
+            searchInput: '',
+            searchSelect: 'Adresa'
         }
 
         this.btnOnClick = this.btnOnClick.bind(this);
@@ -53,6 +58,9 @@ export class ContentTable extends React.Component{
         this.onDelete = this.onDelete.bind(this);
         this.umetnickaDelaGet = this.umetnickaDelaGet.bind(this);
         this.onChangeClick = this.onChangeClick.bind(this);
+        this.onSearchInput = this.onSearchInput.bind(this);
+        this.onSelectChange = this.onSelectChange.bind(this);
+        
     }
 
     umetnickaDelaGet(data) {
@@ -192,7 +200,10 @@ export class ContentTable extends React.Component{
         if(num === 0){
             this.setState({
                 headers: dataHeader,
-                data: EntitiesState.storeAtelje.getState().ateljes
+                data: EntitiesState.storeAtelje.getState().ateljes,
+                filteredData: EntitiesState.storeAtelje.getState().ateljes,
+                searchInput: this.state.searchInput,
+                searchSelect: this.state.searchSelect
             });
 
             EntitiesState.storeActivate.dispatch({
@@ -203,7 +214,10 @@ export class ContentTable extends React.Component{
         else if (num === 1){
             this.setState({
                 headers: dataHUmetnickaD,
-                data: EntitiesState.storeUd.getState().uds
+                data: EntitiesState.storeUd.getState().uds,
+                filteredData: EntitiesState.storeUd.getState().uds,
+                searchInput: this.state.searchInput,
+                searchSelect: this.state.searchSelect
             });
 
             EntitiesState.storeActivate.dispatch({
@@ -214,7 +228,10 @@ export class ContentTable extends React.Component{
         else {
             this.setState({
                 headers: dataHAutor,
-                data: EntitiesState.storeAutor.getState().autors
+                data: EntitiesState.storeAutor.getState().autors,
+                filteredData: EntitiesState.storeAutor.getState().autors,
+                searchInput: this.state.searchInput,
+                searchSelect: this.state.searchSelect
             });
 
             EntitiesState.storeActivate.dispatch({
@@ -269,6 +286,41 @@ export class ContentTable extends React.Component{
 
     }
 
+    onSelectChange(e) {
+        this.setState({
+            headers: dataHeader,
+            data: EntitiesState.storeAtelje.getState().ateljes,
+            filteredData: EntitiesState.storeAtelje.getState().ateljes,
+            searchInput: '',
+            searchSelect: e.target.value
+        });
+    }
+
+    onSearchInput(e) {
+        let val = e.target.value;
+        
+        if (val) {
+            let newData = [];
+
+            this.setState({
+                headers: this.state.headers,
+                data: EntitiesState.storeAtelje.getState().ateljes,
+                filteredData: this.state.filteredData.filter((data) => data[this.state.searchSelect].includes(val)),
+                searchInput: val,
+                searchSelect: this.state.searchSelect
+            });
+        }
+        else {
+            this.setState({
+                headers: this.state.headers,
+                data: EntitiesState.storeAtelje.getState().ateljes,
+                filteredData: EntitiesState.storeAtelje.getState().ateljes,
+                searchInput: val,
+                searchSelect: this.state.searchSelect
+            });
+        }
+    }
+
     render(){
         let hElems = [];
 
@@ -277,9 +329,37 @@ export class ContentTable extends React.Component{
             hElems.push(<th>{d}</th>);
         }
 
+
+        if (EntitiesState.storeActivate.getState().activate === 'Atelje') {
+            hElems.push(<th>
+                <label
+                    className="labelLogin"
+                >
+                    Pretraga
+                </label>
+                <br/>
+                <select
+                    className="input"
+                    onChange={this.onSelectChange}
+                    value={this.state.searchSelect}
+                >
+                    <option value="Adresa">Adresa</option>
+                    <option value="MBR">MBR</option>
+                    <option value="PIB">PIB</option>
+                </select>
+                <input
+                    type="text"
+                    value={this.state.searchInput}
+                    className="input"
+                    onChange={this.onSearchInput}
+                />
+            </th>)
+        }
+
+
         let dataEl = [];
-        for (let i = 0; i < this.state.data.length; i++) {
-            let d = this.state.data[i];
+        for (let i = 0; i < this.state.filteredData.length; i++) {
+            let d = this.state.filteredData[i];
             let td = [];
 
             Object.entries(d).map(([key, value]) => {
