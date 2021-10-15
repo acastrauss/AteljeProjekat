@@ -93,7 +93,6 @@ export class RegisterForm extends React.Component{
             .then(data => {
                 alert('Registered');
             });
-
     }
 
     render() {

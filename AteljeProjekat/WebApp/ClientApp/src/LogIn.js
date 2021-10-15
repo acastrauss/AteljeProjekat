@@ -75,7 +75,11 @@ export class LogIn extends React.Component{
                             type: LOGIN_USER,
                             username: data.korisnickoIme,
                             userId: data.id,
-                            userRole: data.tipKorisnika
+                            userRole: data.tipKorisnika,
+                            email: data.email,
+                            ime: data.ime,
+                            prezime: data.prezime,
+                            password: data.lozinkaHash
                         });
 
                         let storeState = store.getState();

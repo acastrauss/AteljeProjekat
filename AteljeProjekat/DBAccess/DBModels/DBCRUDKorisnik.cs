@@ -117,6 +117,7 @@ namespace Atelje {
 				db.KorisnikSistemas.Remove(current);
 				db.KorisnikSistemas.Add((DBAccess.KorisnikSistema)konverzija.ConvertToDBModel(k));
 				db.SaveChanges();
+				
 			}
 		}
 

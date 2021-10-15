@@ -10,7 +10,12 @@
     grid-row: 1/2;
 }
 
-.grid-contentTable{
+.grid-updateUser{
+    grid-column: 5;
+    grid-row:1;
+}
+
+.grid-contentTable {
     grid-column: 2/9;
     grid-row: auto;
 }

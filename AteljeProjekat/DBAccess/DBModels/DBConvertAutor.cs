@@ -78,8 +78,8 @@ namespace Atelje {
 					GodinaRodjenja = autor.GodinaRodjenja,
 					GodinaSmrti = autor.GodinaSmrti,
 					Id = autor.Id,
-					Ime = autor.Ime,
-					Prezime = autor.Prezime,
+					Ime = autor.Ime.Trim(),
+					Prezime = autor.Prezime.Trim(),
 					UmetnickaDela = dela,
 					UmetnickiPravac = (UmetnickiPravac)autor.UmetnickiPravac
 				};

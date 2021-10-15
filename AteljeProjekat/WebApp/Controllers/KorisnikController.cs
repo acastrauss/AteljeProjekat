@@ -77,6 +77,22 @@ namespace WebApp.Controllers
             }
         }
 
+        [HttpPost]
+        public int Update([FromBody] object value)
+        {
+            try
+            {
+                var k = JsonConvert.DeserializeObject<Atelje.KorisnikSistema>(value.ToString());
+                DBCRUD db = new DBCRUDKorisnik();
+                db.Update(k);
+                return 0;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+        }
+
         // PUT api/<KorisnikController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

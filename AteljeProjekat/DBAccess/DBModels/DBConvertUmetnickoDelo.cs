@@ -56,7 +56,7 @@ namespace Atelje {
 				return new UmetnickoDelo()
 				{
 					Id = ud.Id,
-					Naziv = ud.Naziv,
+					Naziv = ud.Naziv.Trim(),
 					Pravac = (UmetnickiPravac)ud.Pravac,
 					Stil = (Stil)ud.Stil,
 					IdAtelje = (int)ud.AteljeId,

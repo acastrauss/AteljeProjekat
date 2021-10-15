@@ -59,12 +59,12 @@ namespace Atelje {
 
 				return new KorisnikSistema()
 				{
-					Email = k.Email,
+					Email = k.Email.Trim(),
 					Id = k.Id,
-					Ime = k.Ime,
-					KorisnickoIme = k.KorisnickoIme,
-					LozinkaHash = k.LozinkaHash,
-					Prezime = k.Prezime,
+					Ime = k.Ime.Trim(),
+					KorisnickoIme = k.KorisnickoIme.Trim(),
+					LozinkaHash = k.LozinkaHash.Trim(),
+					Prezime = k.Prezime.Trim(),
 					TipKorisnika = (TipKorisnika)k.TipKorisnika
 				};
             }

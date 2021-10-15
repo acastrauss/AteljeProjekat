@@ -12,6 +12,7 @@ import { Details } from './Details';
 import { UpdateForm } from './EntityForms/UpdateForm';
 import { Commands } from './Commands';
 import * as LoginCredentials from './LoginCredentials';
+import { UpdateUser } from './EntityForms/UserForm';
 
 var unsubLogin;
 
@@ -42,6 +43,9 @@ export default class App extends Component {
                 <div className='grid-container'>
                     <div className='grid-login'>
                         <LogIn />
+                    </div>
+                    <div className='grid-updateUser'>
+                        <UpdateUser/>
                     </div>
                     <div
                         className='grid-contentTable'

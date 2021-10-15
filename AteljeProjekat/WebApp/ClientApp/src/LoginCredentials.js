@@ -6,17 +6,25 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const initState = {
     type: LOGOUT_USER,
-    username: '',
     userId: -1,
-    userRole: -1
+    userRole: -1,
+    username: '',
+    password: '',
+    ime: '',
+    prezime: '',
+    email: ''
 };
 
 export function loginReducer(state = initState, action) {
     if (action.type == LOGIN_USER) {
         return {
             username: action.username,
+            password: action.password,
             userId: action.userId,
-            userRole: action.userRole
+            userRole: action.userRole,
+            ime: action.ime,
+            prezime: action.prezime,
+            email: action.email
         };
     }
 
