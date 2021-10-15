@@ -34,6 +34,8 @@ namespace WebApp.Controllers
             {
                 foreach (var ud in uds)
                 {
+                    if (ud == null) continue;
+
                     if(((Atelje.UmetnickoDelo)ud).Id == id)
                     {
                         return (Atelje.UmetnickoDelo)ud;

@@ -9,6 +9,7 @@ let arrInput = [
 
 let btnOpac = 0.5;
 var unsubLogin;
+let hiddenUpdate = true;
 
 export class UpdateUser extends React.Component {
     constructor(props) {
@@ -28,6 +29,7 @@ export class UpdateUser extends React.Component {
         this.onInputChange = this.onInputChange.bind(this);
         this.validateInput = this.validateInput.bind(this);
         this.updateClick = this.updateClick.bind(this);
+        this.showUpdate = this.showUpdate.bind(this);
     }
 
     callUpdate() {
@@ -87,6 +89,11 @@ export class UpdateUser extends React.Component {
         }
 
         return cond;
+    }
+
+    showUpdate() {
+        hiddenUpdate = !hiddenUpdate;
+        this.forceUpdate();
     }
 
     updateClick() {
@@ -218,7 +225,15 @@ export class UpdateUser extends React.Component {
         return <div
             className="Login"
             hidden={LoginCredentials.store.getState().userId === -1}>
-            {inputs}
+            <button
+                className="loginbtn"
+                onClick={this.showUpdate}
+            >
+                Izmeni profil
+            </button>
+            <div hidden={ hiddenUpdate}>
+                {inputs}
+            </div>
         </div>
     }
 }
