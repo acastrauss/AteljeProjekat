@@ -76,9 +76,7 @@ export class UpdateForm extends React.Component {
         let reqH = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            headers: {
+                'Content-Type': 'application/json',
                 'userId': store.getState().userId
             },
             body: JSON.stringify(entity)
@@ -88,7 +86,7 @@ export class UpdateForm extends React.Component {
             .then(response => response.json())
             .then(data => {
                 if (data)
-                    alert('Updated');
+                    alert('Uspesna izmena');
                 else
                     alert('Error');
             });

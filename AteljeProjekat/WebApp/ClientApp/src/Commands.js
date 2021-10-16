@@ -42,11 +42,10 @@ export class Commands extends React.Component {
             .then(data => {
                 if (data) {
                     commands.splice(commands.length - 1, 1);
-                    alert('Uspesna akcija.');
                     this.forceUpdate();
                 }
                 else
-                    alert('Neuspesna.');
+                    alert('Greska.');
             });
     }
 
@@ -63,11 +62,10 @@ export class Commands extends React.Component {
             .then(data => {
                 if (data) {
                     commands.splice(commands.length - 1, 1);
-                    alert('Uspesna akcija.');
                     this.forceUpdate();
                 }
                 else
-                    alert('Neuspesna.');
+                    alert('Greska.');
             });
     }
 
@@ -88,7 +86,6 @@ export class Commands extends React.Component {
 
         let header = [];
 
-        if (commandsRender.length > 0) {
             header.push(
                 <tr>
                     <td>
@@ -108,7 +105,7 @@ export class Commands extends React.Component {
                         </button>
                     </td>
                 </tr>);
-        }
+        
 
         return <table
             className="commandTable"

@@ -22,12 +22,10 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public bool Redo()
+        public bool Redo([FromHeader] int userId)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
-            int userId = -1;
-            Int32.TryParse(Request.Headers["userId"], out userId);
-
+            
             try
             {
                 _invoker.Redo();
@@ -50,12 +48,10 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public bool Undo()
+        public bool Undo([FromHeader] int userId)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
-            int userId = -1;
-            Int32.TryParse(Request.Headers["userId"], out userId);
-
+            
             try
             {
                 _invoker.Undo();
@@ -106,12 +102,10 @@ namespace WebApp.Controllers
 
         [HttpPost]
 
-        public Atelje.Atelje Double([FromBody] object value)
+        public Atelje.Atelje Double([FromBody] object value, [FromHeader] int userId)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
-            int userId = -1;
-            Int32.TryParse(Request.Headers["userId"], out userId);
-
+            
             try
             {
                 var atelje = JsonConvert.DeserializeObject<Atelje.Atelje>(value.ToString());
@@ -141,12 +135,10 @@ namespace WebApp.Controllers
 
         // POST api/<AteljeController>
         [HttpPost]
-        public Atelje.Atelje Create([FromBody] object value)
+        public Atelje.Atelje Create([FromBody] object value, [FromHeader] int userId)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
-            int userId = -1;
-            Int32.TryParse(Request.Headers["userId"], out userId);
-
+            
             try
             {
                 var atelje = JsonConvert.DeserializeObject<Atelje.Atelje>(value.ToString());
@@ -176,12 +168,10 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public Atelje.Atelje Update([FromBody] object value)
+        public Atelje.Atelje Update([FromBody] object value, [FromHeader] int userId)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
-            int userId = -1;
-            Int32.TryParse(Request.Headers["userId"], out userId);
-
+            
             try
             {
                 var a = JsonConvert.DeserializeObject<Atelje.Atelje>(value.ToString());
@@ -217,12 +207,10 @@ namespace WebApp.Controllers
 
         // DELETE api/<AteljeController>/5
         [HttpDelete]
-        public int Delete([FromQuery] int id)
+        public int Delete([FromQuery] int id, [FromHeader] int userId)
         {
             LogPodatak log = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
-            int userId = -1;
-            Int32.TryParse(Request.Headers["userId"], out userId);
-
+            
             try
             {
                 DBCRUDAteljeDelete db = new DBCRUDAteljeDelete();

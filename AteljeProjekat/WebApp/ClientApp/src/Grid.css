@@ -41,6 +41,6 @@
 }
 
 .grid-commands{
-    grid-column: 18/20;
+    grid-column: 18/auto;
     grid-row: auto;
 }

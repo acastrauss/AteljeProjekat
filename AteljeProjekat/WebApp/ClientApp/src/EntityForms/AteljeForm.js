@@ -61,9 +61,7 @@ export class AteljeForm extends React.Component {
         let reqH = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            headers: {
+                'Content-Type': 'application/json',
                 'userId': store.getState().userId
             },
             body: JSON.stringify(atelje)
@@ -72,7 +70,10 @@ export class AteljeForm extends React.Component {
         fetch('api/Atelje/Create', reqH)
             .then(response => response.json())
             .then(data => {
-                alert('Added atelje');
+                if (data)
+                    alert('Dodat atelje');
+                else
+                    alert('Error.');
             });
 
         for (let i = 0; i < 3; i++) {

@@ -37,6 +37,20 @@ export class DownloadCSV extends React.Component {
 
     componentDidMount() {
         unsubLogin = LoginCredentials.store.subscribe(this.setId)
+        if (this.state.userId !== -1) {
+            let currentId = LoginCredentials.store.getState().userId;
+
+            if (currentId !== -1) {
+                this.setState({
+                    userId: LoginCredentials.store.getState().userId
+                });
+            }
+            else {
+                this.setState({
+                    userId: -2
+                });
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -44,6 +58,7 @@ export class DownloadCSV extends React.Component {
     }
 
     onClick() {
+        
         let url = this.state.userId === -1 ?
             `api/Log/SistemLog` : `api/Log/UserLog?id=${this.state.userId}`;
 

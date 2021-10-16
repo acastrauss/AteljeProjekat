@@ -15,7 +15,7 @@ namespace WebApp.Controllers
     [ApiController]
     public class KorisnikController : ControllerBase
     {
-        
+
         // GET: api/<KorisnikController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -31,7 +31,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public KorisnikSistema UserId([FromBody]object value)
+        public KorisnikSistema UserId([FromBody] object value)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace WebApp.Controllers
 
         // POST api/<KorisnikController>
         [HttpPost]
-        public int Register([FromBody] object value)
+        public int Register([FromBody] object value, [FromHeader] int userId)
         {
             LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
 
@@ -63,7 +63,7 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.INFO;
                 logPodatak.Poruka = String.Format("Registrovan korisnik id:{0}", k.Id);
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return 0;
             }
             catch (Exception e)
@@ -72,27 +72,31 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.ERROR;
                 logPodatak.Poruka = String.Format("Greska prilikom registrovanja korisnika");
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return -1;
             }
         }
+
+
 
         [HttpPost]
         public int Update([FromBody] object value)
         {
             LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
-
+            int currentId = -1;
             try
             {
                 var k = JsonConvert.DeserializeObject<Atelje.KorisnikSistema>(value.ToString());
+                currentId = k.Id;
                 DBCRUD db = new DBCRUDKorisnik();
                 db.Update(k);
+                logPodatak.korisnikLog.IzmeniImeFajla(k.Id, ((DBCRUDKorisnik)db).NewId);
 
                 logPodatak.Vreme = DateTime.Now;
                 logPodatak.Tip = LogTip.INFO;
                 logPodatak.Poruka = String.Format("Izmenjen korisnik id:{0}", k.Id);
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, ((DBCRUDKorisnik)db).NewId);                
                 return 0;
             }
             catch (Exception e)
@@ -101,7 +105,7 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.ERROR;
                 logPodatak.Poruka = String.Format("Greska prilikom izmene korisnika");
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, currentId);
                 return -1;
             }
         }

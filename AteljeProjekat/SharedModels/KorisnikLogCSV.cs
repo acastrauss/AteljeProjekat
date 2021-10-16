@@ -25,6 +25,20 @@ namespace Atelje {
 
 		}
 
+        public void IzmeniImeFajla(int prevId, int newId)
+        {
+			var logDir = Directory.GetCurrentDirectory();
+
+			var pathPrev = Path.Combine(logDir, "UsersLog", String.Format("{0}.csv", prevId));
+
+			var content = File.ReadAllText(pathPrev);
+
+			File.Delete(pathPrev);
+
+			var pathNew = Path.Combine(logDir, "UsersLog", String.Format("{0}.csv", newId));
+			File.WriteAllText(pathNew, content);
+		}
+
 		/// 
 		/// <param name="log"></param>
 		/// <param name="idKorisnika"></param>
@@ -39,6 +53,8 @@ namespace Atelje {
 			File.AppendAllText(pathLog, csv);
 
 		}
+
+
 
 	}//end KorisnikLogCSV
 

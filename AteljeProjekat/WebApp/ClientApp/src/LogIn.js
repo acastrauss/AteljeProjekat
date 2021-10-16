@@ -70,7 +70,6 @@ export class LogIn extends React.Component{
 
                     if (data.id != -1) {
                         
-                        alert('You logged in. Your ID:' + data.id);
                         store.dispatch({
                             type: LOGIN_USER,
                             username: data.korisnickoIme,
@@ -90,7 +89,7 @@ export class LogIn extends React.Component{
                         this.changeLoginShow();
                     }
                     else {
-                        alert('Wrong credentials.');
+                        alert('Pogresno korisnicko ime/lozinka.');
                     }
                 });
         }

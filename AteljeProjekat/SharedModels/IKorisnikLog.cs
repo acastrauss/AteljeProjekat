@@ -21,6 +21,7 @@ namespace Atelje {
 		/// <param name="log"></param>
 		/// <param name="idKorisnika"></param>
 		void UpisiLog(LogPodatak log, int idKorisnika);
+		void IzmeniImeFajla(int prevId, int newId);
 	}//end IKorisnikLog
 
 }//end namespace Atelje

@@ -10,3 +10,24 @@
 10/11/2021 9:36:58 PM,INFO,Odradjena "Undo" komanda nad bazom Ateljea.
 10/11/2021 9:44:52 PM,INFO,Izbrisan atelje id:2026
 10/11/2021 9:45:30 PM,INFO,Odradjena "Undo" komanda nad bazom Ateljea.
+10/16/2021 10:18:34 PM,INFO,Dupliranje ateljea id:2024
+10/16/2021 10:18:48 PM,INFO,Izbrisan atelje id:2028
+10/16/2021 10:39:15 PM,ERROR,Greska prilikom "Undo" komande nad bazom Ateljea.
+10/16/2021 10:39:18 PM,INFO,Odradjena "Redo" komanda nad bazom Ateljea.
+10/16/2021 10:39:21 PM,INFO,Odradjena "Undo" komanda nad bazom Ateljea.
+10/16/2021 10:39:57 PM,INFO,Odradjena "Undo" komanda nad bazom Ateljea.
+10/16/2021 10:40:08 PM,INFO,Odradjena "Redo" komanda nad bazom Ateljea.
+10/16/2021 10:40:58 PM,INFO,Registrovan korisnik id:0
+10/16/2021 10:41:55 PM,INFO,Kreirano umetnicko delo id:0
+10/16/2021 10:42:19 PM,INFO,Kreiranje ateljea id:2029
+10/16/2021 10:42:46 PM,INFO,Odradjena "Undo" komanda nad bazom Ateljea.
+10/16/2021 10:42:54 PM,INFO,Odradjena "Redo" komanda nad bazom Ateljea.
+10/16/2021 10:43:15 PM,INFO,Izbrisan atelje id:2030
+10/16/2021 10:43:36 PM,INFO,Odradjena "Redo" komanda nad bazom Ateljea.
+10/16/2021 10:44:18 PM,INFO,Odradjena "Undo" komanda nad bazom Ateljea.
+10/16/2021 10:44:38 PM,INFO,Odradjena "Redo" komanda nad bazom Ateljea.
+10/16/2021 10:44:57 PM,INFO,Odradjena "Redo" komanda nad bazom Ateljea.
+10/16/2021 10:51:30 PM,INFO,Izbrisan atelje id:2031
+10/16/2021 10:54:28 PM,INFO,Izbrisano umetnicko delo id:2020
+10/16/2021 10:54:29 PM,INFO,Izbrisano umetnicko delo id:2020
+10/16/2021 10:54:41 PM,INFO,Izbrisan atelje id:2024

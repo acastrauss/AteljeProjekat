@@ -18,6 +18,10 @@ using System.Linq;
 
 namespace Atelje {
 	public class DBCRUDKorisnik : DBCRUD {
+		/// <summary>
+		/// Kada se korisnik izmeni promeni mu se i ID
+		/// </summary>
+		public int NewId { get; private set; }
 
 		public DBCRUDKorisnik(){
 
@@ -115,9 +119,10 @@ namespace Atelje {
 				konverzija = new DBConvertKorisnik();
 
 				db.KorisnikSistemas.Remove(current);
-				db.KorisnikSistemas.Add((DBAccess.KorisnikSistema)konverzija.ConvertToDBModel(k));
+				var newUser = (DBAccess.KorisnikSistema)konverzija.ConvertToDBModel(k);
+				db.KorisnikSistemas.Add(newUser);
 				db.SaveChanges();
-				
+				this.NewId = newUser.Id;
 			}
 		}
 

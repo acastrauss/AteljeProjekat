@@ -107,9 +107,7 @@ export class UmetnickoDeloForm extends React.Component {
         let reqH = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            headers: {
+                'Content-Type': 'application/json',
                 'userId': LoginCredentials.store.getState().userId
             },
             body: JSON.stringify(ud)
@@ -121,7 +119,7 @@ export class UmetnickoDeloForm extends React.Component {
             .then(response => response.json())
             .then(data => {
                 if (data)
-                    alert('Added delo');
+                    alert('Dodato delo');
                 else
                     alert('Error');
             });

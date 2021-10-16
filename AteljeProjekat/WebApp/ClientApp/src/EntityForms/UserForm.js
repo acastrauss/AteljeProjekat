@@ -167,7 +167,7 @@ export class UpdateUser extends React.Component {
                                 this.forceUpdate();
                             }
                             else {
-                                alert('Wrong credentials.');
+                                alert('Progresno korisnicko ime/lozinka.');
                             }
                         });
                 }

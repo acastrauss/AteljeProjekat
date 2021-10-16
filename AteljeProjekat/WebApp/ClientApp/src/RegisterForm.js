@@ -80,9 +80,7 @@ export class RegisterForm extends React.Component{
         let reqH = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            headers: {
+                'Content-Type': 'application/json',
                 'userId': LoginCredentials.store.getState().userId
             },
             body: JSON.stringify(values)
@@ -91,7 +89,7 @@ export class RegisterForm extends React.Component{
         fetch('api/Korisnik/Register', reqH)
             .then(response => response.json())
             .then(data => {
-                alert('Registered');
+                alert('Registrovan korisnik.');
             });
     }
 

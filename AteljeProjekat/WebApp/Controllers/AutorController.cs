@@ -33,7 +33,7 @@ namespace WebApp.Controllers
 
         // POST api/<AutorController>
         [HttpPost]
-        public Atelje.Autor Create([FromBody] object value)
+        public Atelje.Autor Create([FromBody] object value, [FromHeader] int userId)
         {
             LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
 
@@ -48,7 +48,7 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.INFO;
                 logPodatak.Poruka = String.Format("Napravljen autor id:{0}", a.Id);
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return a;
             }
             catch (Exception)
@@ -57,14 +57,14 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.ERROR;
                 logPodatak.Poruka = String.Format("Greska prilikom pravljenja autora");
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return null;
             }
 
         }
 
         [HttpPost]
-        public Autor Update([FromBody] object value)
+        public Autor Update([FromBody] object value, [FromHeader] int userId)
         {
             LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
 
@@ -78,6 +78,7 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.INFO;
                 logPodatak.Poruka = String.Format("Izmenjen autor id:{0}", a.Id);
                 logPodatak.sistemLog.UpisiLog(logPodatak);
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return a;
             }
             catch (Exception e)
@@ -86,6 +87,7 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.ERROR;
                 logPodatak.Poruka = String.Format("Greska prilikom izmene autora");
                 logPodatak.sistemLog.UpisiLog(logPodatak);
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return null;
             }
 
@@ -98,7 +100,7 @@ namespace WebApp.Controllers
         }
 
         [HttpDelete]
-        public int Delete([FromQuery] int id)
+        public int Delete([FromQuery] int id, [FromHeader] int userId)
         {
             LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
 
@@ -119,7 +121,7 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.INFO;
                 logPodatak.Poruka = String.Format("Izbrisan autor id:{0}", id);
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return id;
             }
             catch (Exception e)
@@ -128,7 +130,7 @@ namespace WebApp.Controllers
                 logPodatak.Tip = LogTip.ERROR;
                 logPodatak.Poruka = String.Format("Greska prilikom brisanja autora id:{0}", id);
                 logPodatak.sistemLog.UpisiLog(logPodatak);
-
+                logPodatak.korisnikLog.UpisiLog(logPodatak, userId);
                 return -1;
             }
         }

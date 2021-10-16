@@ -60,7 +60,11 @@ export class ContentTable extends React.Component{
         this.onChangeClick = this.onChangeClick.bind(this);
         this.onSearchInput = this.onSearchInput.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        
+        this.callUpdate = this.callUpdate.bind(this);
+    }
+
+    callUpdate() {
+        this.forceUpdate();
     }
 
     umetnickaDelaGet(data) {
@@ -88,7 +92,7 @@ export class ContentTable extends React.Component{
 
         EntitiesState.storeUd.dispatch(newState);
 
-        this.forceUpdate();
+        this.callUpdate();
     }
 
     componentDidMount() {
@@ -120,7 +124,7 @@ export class ContentTable extends React.Component{
 
                     EntitiesState.storeAtelje.dispatch(newState);
                     
-                    this.forceUpdate();
+                    this.callUpdate();
                 });
 
             fetch('api/Autor/GetAll')
@@ -148,7 +152,7 @@ export class ContentTable extends React.Component{
 
                     EntitiesState.storeAutor.dispatch(newState);
 
-                    this.forceUpdate();
+                    this.callUpdate();
                 });
 
             fetch('api/UmetnickoDelo/GetAll')
@@ -187,10 +191,10 @@ export class ContentTable extends React.Component{
         fetch(`api/${active}/Delete?id=${id}`, reqH)
             .then(response => response.json())
             .then(data => {
-                if (data !== -1)
-                    alert('Deleted');
-                else
+                if (data === -1)
                     alert('Error');
+                else
+                    this.callUpdate();
             });
     }
 
@@ -264,9 +268,7 @@ export class ContentTable extends React.Component{
         let reqH = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            headers: {
+                'Content-Type': 'application/json',
                 'userId': store.getState().userId
             },
             body: JSON.stringify(entity)
@@ -276,11 +278,11 @@ export class ContentTable extends React.Component{
         fetch('api/Atelje/Double', reqH)
             .then(response => response.json())
             .then(data => {
-                if (data) {
-                    alert('Doubled');
+                if (!data) {
+                    alert('Error');
                 }
                 else {
-                    alert('Error');
+                    this.callUpdate();
                 }
             });
 
