@@ -80,15 +80,28 @@ namespace WebApp.Controllers
         [HttpPost]
         public int Update([FromBody] object value)
         {
+            LogPodatak logPodatak = new LogPodatak(new KorisnikLogCSV(), new SistemLogCSV());
+
             try
             {
                 var k = JsonConvert.DeserializeObject<Atelje.KorisnikSistema>(value.ToString());
                 DBCRUD db = new DBCRUDKorisnik();
                 db.Update(k);
+
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.INFO;
+                logPodatak.Poruka = String.Format("Izmenjen korisnik id:{0}", k.Id);
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return 0;
             }
             catch (Exception e)
             {
+                logPodatak.Vreme = DateTime.Now;
+                logPodatak.Tip = LogTip.ERROR;
+                logPodatak.Poruka = String.Format("Greska prilikom izmene korisnika");
+                logPodatak.sistemLog.UpisiLog(logPodatak);
+
                 return -1;
             }
         }

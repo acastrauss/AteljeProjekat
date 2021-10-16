@@ -13,6 +13,7 @@ import { UpdateForm } from './EntityForms/UpdateForm';
 import { Commands } from './Commands';
 import * as LoginCredentials from './LoginCredentials';
 import { UpdateUser } from './EntityForms/UserForm';
+import { DownloadCSV } from './DownloadCSV';
 
 var unsubLogin;
 
@@ -46,6 +47,10 @@ export default class App extends Component {
                     </div>
                     <div className='grid-updateUser'>
                         <UpdateUser/>
+                    </div>
+                    <div className='grid-download'>
+                        <DownloadCSV userId={-1}/>
+                        <DownloadCSV userId={-2}/>
                     </div>
                     <div
                         className='grid-contentTable'

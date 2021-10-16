@@ -162,7 +162,7 @@ export class UpdateUser extends React.Component {
                                 let storeState = LoginCredentials.store.getState();
                                 storeState.type = LoginCredentials.LOGIN_USER;
 
-                                localStorage.setItem('user', JSON.stringify(LoginCredentials.store.getState()));
+                                sessionStorage.setItem('user', JSON.stringify(LoginCredentials.store.getState()));
 
                                 this.forceUpdate();
                             }

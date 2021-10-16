@@ -22,8 +22,8 @@ export class LogIn extends React.Component{
         })
 
         // save user state
-        if (localStorage.getItem('user') != null) {
-            store.dispatch(JSON.parse(localStorage.getItem('user')));
+        if (sessionStorage.getItem('user') != null) {
+            store.dispatch(JSON.parse(sessionStorage.getItem('user')));
         }
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -42,7 +42,7 @@ export class LogIn extends React.Component{
 
         if (store.getState().userId != -1) {
             store.dispatch(initState);
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('user');
             this.changeLoginShow();
         }
         else {
@@ -85,7 +85,7 @@ export class LogIn extends React.Component{
                         let storeState = store.getState();
                         storeState.type = LOGIN_USER;
 
-                        localStorage.setItem('user', JSON.stringify(store.getState()));
+                        sessionStorage.setItem('user', JSON.stringify(store.getState()));
 
                         this.changeLoginShow();
                     }

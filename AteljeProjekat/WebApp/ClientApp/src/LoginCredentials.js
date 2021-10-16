@@ -38,8 +38,8 @@ export function loginReducer(state = initState, action) {
 
 export const store = createStore(loginReducer);
 
-if (localStorage.getItem('user')) {
-    let user = JSON.parse(localStorage.getItem('user'));
+if (sessionStorage.getItem('user')) {
+    let user = JSON.parse(sessionStorage.getItem('user'));
     user.type = LOGIN_USER;
     store.dispatch(user);
 }
